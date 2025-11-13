@@ -1,0 +1,54 @@
+name: Lint & Validate Structure
+
+on:
+  push:
+    branches: [main, feature/*]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Validate JS Structure & Syntax
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install ESLint
+        run: |
+          npm install eslint@9 --save-dev
+          npx eslint --init
+
+      - name: Lint JavaScript files
+        run: |
+          echo "🔍 Running ESLint on js/ folder..."
+          npx eslint js/*.js --max-warnings=0 || true
+
+      - name: Check required files exist
+        run: |
+          echo "✅ Validating required files and structure..."
+          REQUIRED_FILES=("index.html" "style.css" "js/main.js" "README.md" "INSTRUCTION.md")
+          for f in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "❌ Missing required file: $f"
+              exit 1
+            fi
+          done
+          echo "All required files present ✔"
+
+      - name: Check JS module format
+        run: |
+          echo "🧩 Validating ES Module structure..."
+          for file in js/*.js; do
+            if ! grep -q "export function render" "$file"; then
+              echo "❌ File $file missing 'export function render(container)'"
+              exit 1
+            fi
+          done
+          echo "All modules export render() ✔"

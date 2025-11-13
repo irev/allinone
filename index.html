@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Security Tools - Alat Bantu Keamanan Web</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1>🔒 Web Security Tools</h1>
+            <p class="tagline">Koleksi Alat Bantu Keamanan Web & Konversi Data</p>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="container">
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" data-tool="base64" class="nav-link active">Base64</a></li>
+                <li><a href="#" data-tool="url" class="nav-link">URL Encode</a></li>
+                <li><a href="#" data-tool="hash" class="nav-link">Hash Generator</a></li>
+                <li><a href="#" data-tool="converter" class="nav-link">Text Converter</a></li>
+                <li><a href="#" data-tool="htmlentities" class="nav-link">HTML Entities</a></li>
+                <li><a href="#" data-tool="jwt" class="nav-link">JWT Inspector</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Tool Container - Konten akan dimuat secara dinamis -->
+            <div id="toolContainer" class="tool-container">
+                <div class="loading">
+                    <p>⏳ Memuat alat...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>🔐 Semua operasi dilakukan 100% di browser Anda (client-side).</p>
+            <p>Data Anda <strong>TIDAK</strong> dikirim ke server manapun.</p>
+            <p class="copyright">&copy; 2025 Web Security Tools | Open Source Project</p>
+        </div>
+    </footer>
+
+    <!-- Script Utama -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
