@@ -36,7 +36,15 @@ const toolTitles = {
     'diff': 'Diff/Compare Tool',
     'entropy': 'Password Strength & Entropy Calculator',
     'tlscors': 'TLS/SSL & CORS Tester',
-    'sqli': 'SQL Injection Payload Encoder'
+    'sqli': 'SQL Injection Payload Encoder',
+    // Linux Tools
+    'find-generator': 'Find Command Generator',
+    'grep-builder': 'Grep Command Builder',
+    'disk-analyzer': 'Disk Analyzer',
+    'service-control': 'Service Control',
+    'ping-builder': 'Network Tools',
+    'apt-helper': 'Package Manager',
+    'cron-builder': 'Cron Builder'
 };
 
 /**
@@ -140,41 +148,114 @@ function initializeNavigation() {
                 return;
             }
             
-            // Update state
+            // Update current tool
             currentTool = toolName;
             
-            // Update UI navigasi
+            // Update active navigation
             updateActiveNav(toolName);
             
             // Load tool
             await loadTool(toolName);
             
-            // Update URL hash tanpa reload page
+            // Update URL hash
             window.location.hash = toolName;
             
-            // Close sidebar on mobile after selection
-            if (window.innerWidth <= 768 && sidebar) {
-                sidebar.classList.remove('show');
+            // Close sidebar on mobile after navigation
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
             }
         });
     });
+}
+
+/**
+ * Initialize search functionality
+ */
+function initializeSearch() {
+    const searchInput = document.getElementById('searchTools');
+    const searchClear = document.getElementById('searchClear');
+    const navMenu = document.getElementById('navMenu');
+    const noResults = document.getElementById('searchNoResults');
     
-    // Setup sidebar toggle buttons
-    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-    const btnHideSidebar = document.getElementById('btnHideSidebar');
-    const btnShowSidebar = document.getElementById('btnShowSidebar');
+    if (!searchInput || !navMenu) return;
     
-    if (btnToggleSidebar) {
-        btnToggleSidebar.addEventListener('click', toggleSidebar);
+    // Store original menu structure
+    let originalMenuHTML = navMenu.innerHTML;
+    
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase().trim();
+        
+        // Show/hide clear button
+        if (searchClear) {
+            searchClear.style.display = searchTerm ? 'flex' : 'none';
+        }
+        
+        // If search is empty, restore original menu
+        if (searchTerm === '') {
+            navMenu.innerHTML = originalMenuHTML;
+            if (noResults) noResults.classList.remove('active');
+            
+            // Re-attach navigation listeners
+            navLinks = document.querySelectorAll('.nav-link');
+            initializeNavigation();
+            updateActiveNav(currentTool);
+            return;
+        }
+        
+        // Find all matching tools
+        const allLinks = Array.from(document.querySelectorAll('.nav-link'));
+        const matchingTools = [];
+        
+        allLinks.forEach(link => {
+            const navText = link.querySelector('.nav-text')?.textContent.toLowerCase() || '';
+            const toolName = link.dataset.tool || '';
+            const toolTitle = toolTitles[toolName]?.toLowerCase() || '';
+            
+            // Match against text, tool name, or title
+            if (navText.includes(searchTerm) || 
+                toolName.includes(searchTerm) || 
+                toolTitle.includes(searchTerm)) {
+                matchingTools.push(link.cloneNode(true));
+            }
+        });
+        
+        // Build search results view
+        if (matchingTools.length > 0) {
+            let searchHTML = '<li class="nav-category search-result-category">result:</li>';
+            matchingTools.forEach(link => {
+                searchHTML += `<li>${link.outerHTML}</li>`;
+            });
+            navMenu.innerHTML = searchHTML;
+            if (noResults) noResults.classList.remove('active');
+            
+            // Re-attach navigation listeners
+            navLinks = document.querySelectorAll('.nav-link');
+            initializeNavigation();
+            updateActiveNav(currentTool);
+        } else {
+            // No results found
+            navMenu.innerHTML = '';
+            if (noResults) noResults.classList.add('active');
+        }
+    });
+    
+    // Clear button
+    if (searchClear) {
+        searchClear.addEventListener('click', () => {
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input'));
+            searchInput.focus();
+        });
     }
     
-    if (btnHideSidebar) {
-        btnHideSidebar.addEventListener('click', toggleSidebar);
-    }
-    
-    if (btnShowSidebar) {
-        btnShowSidebar.addEventListener('click', toggleSidebar);
-    }
+    // Focus search on Ctrl+K or Cmd+K
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        }
+    });
 }
 
 /**
@@ -209,7 +290,11 @@ function initializeApp() {
     }
     
     // Setup navigation
+    // Initialize navigation
     initializeNavigation();
+    
+    // Initialize search functionality
+    initializeSearch();
     
     // Setup hash change listener
     window.addEventListener('hashchange', handleHashChange);
