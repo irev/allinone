@@ -76,12 +76,6 @@ export function render(container) {
                 <div id="converterOutput" class="output-box"></div>
             </div>
 
-            <div class="btn-group">
-                <button id="btnCopy" class="btn btn-outline">
-                    📋 Salin Output
-                </button>
-            </div>
-
             <div id="outputInfo" class="form-group mt-2 hidden">
                 <div class="alert alert-info" id="infoContent"></div>
             </div>
@@ -129,7 +123,6 @@ function initializeEventListeners(container) {
     const btnConvert = container.querySelector('#btnConvert');
     const btnSwap = container.querySelector('#btnSwap');
     const btnClear = container.querySelector('#btnClear');
-    const btnCopy = container.querySelector('#btnCopy');
 
     // Update labels based on conversion type
     const updateLabels = () => {
@@ -233,19 +226,6 @@ function initializeEventListeners(container) {
     });
 
     // Event: Copy
-    btnCopy.addEventListener('click', async () => {
-        const output = converterOutput.textContent;
-        
-        if (output && output.trim() && !output.includes('⚠️') && !output.includes('❌')) {
-            try {
-                await navigator.clipboard.writeText(output);
-                showTempMessage(btnCopy, '✅ Tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopy, '❌ Gagal menyalin');
-            }
-        }
-    });
-
     // Initialize labels
     updateLabels();
 
@@ -255,6 +235,12 @@ function initializeEventListeners(container) {
             showCopy: true,
             showPaste: true
         });
+
+        // Add copy button to output
+        utils.addCopyToOutput(converterOutput);
+
+        // Make alerts collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 

@@ -445,5 +445,8 @@ export function render(container) {
       showCopy: true,
       showPaste: true
     });
+
+    // Make disclaimer collapsible
+    utils.initAllCollapsibles(container);
   }, 100);
 }

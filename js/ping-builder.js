@@ -1,4 +1,6 @@
 // Ping Builder / Network Tools
+import { utils } from './main.js';
+
 export function render(container) {
     container.innerHTML = initPingBuilder();
     
@@ -22,9 +24,6 @@ export function render(container) {
         // Initial update
         updateNetCommand();
         
-        // Copy button
-        document.getElementById('btnCopyNet')?.addEventListener('click', () => copyToClipboard('netOutput'));
-        
         // Attach quick network buttons
         const quickBtns = container.querySelectorAll('.btn-secondary.btn-sm');
         const commands = [
@@ -40,6 +39,18 @@ export function render(container) {
                 setQuickNet(commands[index]);
             });
         });
+
+        // Add copy button to output
+        const netOutput = document.getElementById('netOutput');
+        if (netOutput) {
+            utils.addTextareaActions(netOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 
@@ -138,7 +149,6 @@ function initPingBuilder() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="netOutput" class="form-control" readonly rows="3"></textarea>
-                <button class="btn-copy-inline" id="btnCopyNet">📋 Copy</button>
             </div>
 
             <div class="input-group">

@@ -80,12 +80,6 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
                     <label class="form-label">Token Data:</label>
                     <div id="payloadOutput" class="output-box"></div>
                 </div>
-                
-                <div class="btn-group">
-                    <button id="btnCopyPayload" class="btn btn-outline">
-                        📋 Salin Payload
-                    </button>
-                </div>
             </div>
 
             <!-- Signature -->
@@ -154,7 +148,6 @@ function initializeEventListeners(container) {
     const btnDecode = container.querySelector('#btnDecode');
     const btnClear = container.querySelector('#btnClear');
     const btnSample = container.querySelector('#btnSample');
-    const btnCopyPayload = container.querySelector('#btnCopyPayload');
 
     // Event: Decode JWT
     btnDecode.addEventListener('click', () => {
@@ -199,24 +192,23 @@ function initializeEventListeners(container) {
     });
 
     // Event: Copy Payload
-    btnCopyPayload.addEventListener('click', async () => {
-        const payload = payloadOutput.textContent;
-        if (payload && payload.trim()) {
-            try {
-                await navigator.clipboard.writeText(payload);
-                showTempMessage(btnCopyPayload, '✅ Payload tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopyPayload, '❌ Gagal menyalin');
-            }
-        }
-    });
-
     // Add copy/paste buttons to textarea
     setTimeout(() => {
         utils.addTextareaActions(jwtInput, {
             showCopy: true,
             showPaste: true
         });
+
+        // Add copy buttons to outputs
+        const headerOutput = container.querySelector('#headerOutput');
+        const payloadOutput = container.querySelector('#payloadOutput');
+        const signatureOutput = container.querySelector('#signatureOutput');
+        if (headerOutput) utils.addCopyToOutput(headerOutput);
+        if (payloadOutput) utils.addCopyToOutput(payloadOutput);
+        if (signatureOutput) utils.addCopyToOutput(signatureOutput);
+
+        // Make alerts collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 

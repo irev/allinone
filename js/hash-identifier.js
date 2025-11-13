@@ -87,55 +87,55 @@ function initHashIdentifier() {
                             <td><strong>MD5</strong></td>
                             <td>32 hex</td>
                             <td>[a-f0-9]{32}</td>
-                            <td><code style="font-size: 0.75rem;">5d41402abc4b...</code></td>
+                            <td><code>5d41402abc4b...</code></td>
                         </tr>
                         <tr>
                             <td><strong>SHA-1</strong></td>
                             <td>40 hex</td>
                             <td>[a-f0-9]{40}</td>
-                            <td><code style="font-size: 0.75rem;">356a192b7913b04...</code></td>
+                            <td><code>356a192b7913b04...</code></td>
                         </tr>
                         <tr>
                             <td><strong>SHA-224</strong></td>
                             <td>56 hex</td>
                             <td>[a-f0-9]{56}</td>
-                            <td><code style="font-size: 0.75rem;">d14a028c2a3a2b...</code></td>
+                            <td><code>d14a028c2a3a2b...</code></td>
                         </tr>
                         <tr>
                             <td><strong>SHA-256</strong></td>
                             <td>64 hex</td>
                             <td>[a-f0-9]{64}</td>
-                            <td><code style="font-size: 0.75rem;">e3b0c44298fc1c1...</code></td>
+                            <td><code>e3b0c44298fc1c1...</code></td>
                         </tr>
                         <tr>
                             <td><strong>SHA-384</strong></td>
                             <td>96 hex</td>
                             <td>[a-f0-9]{96}</td>
-                            <td><code style="font-size: 0.75rem;">38b060a751ac96...</code></td>
+                            <td><code>38b060a751ac96...</code></td>
                         </tr>
                         <tr>
                             <td><strong>SHA-512</strong></td>
                             <td>128 hex</td>
                             <td>[a-f0-9]{128}</td>
-                            <td><code style="font-size: 0.75rem;">cf83e1357eefb8...</code></td>
+                            <td><code>cf83e1357eefb8...</code></td>
                         </tr>
                         <tr>
                             <td><strong>NTLM</strong></td>
                             <td>32 hex</td>
                             <td>[a-f0-9]{32}</td>
-                            <td><code style="font-size: 0.75rem;">8846f7eaee8fb1...</code></td>
+                            <td><code>8846f7eaee8fb1...</code></td>
                         </tr>
                         <tr>
                             <td><strong>MySQL</strong></td>
                             <td>16 hex</td>
                             <td>[a-f0-9]{16}</td>
-                            <td><code style="font-size: 0.75rem;">6bb4837eb74329...</code></td>
+                            <td><code>6bb4837eb74329...</code></td>
                         </tr>
                         <tr>
                             <td><strong>bcrypt</strong></td>
                             <td>60 chars</td>
                             <td>$2[aby]$...</td>
-                            <td><code style="font-size: 0.75rem;">$2a$10$N9qo8...</code></td>
+                            <td><code>$2a$10$N9qo8...</code></td>
                         </tr>
                     </tbody>
                 </table>
@@ -485,5 +485,8 @@ export function render(container) {
                 showPaste: true
             });
         }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }

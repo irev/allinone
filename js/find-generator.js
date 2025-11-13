@@ -1,4 +1,6 @@
 // Find Command Generator Tool
+import { utils } from './main.js';
+
 export function render(container) {
     container.innerHTML = initFindGenerator();
     
@@ -14,11 +16,22 @@ export function render(container) {
         // Button listeners
         document.getElementById('btnGenerateFind')?.addEventListener('click', generateFindCommand);
         document.getElementById('btnClearFind')?.addEventListener('click', clearFindForm);
-        document.getElementById('btnCopyFind')?.addEventListener('click', () => copyToClipboard('findOutput'));
         document.getElementById('btnExportFind')?.addEventListener('click', exportFindCommand);
         
         // Auto-generate with default values
         generateFindCommand();
+
+        // Add copy button to output
+        const findOutput = document.getElementById('findOutput');
+        if (findOutput) {
+            utils.addTextareaActions(findOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 
@@ -101,7 +114,6 @@ function initFindGenerator() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="findOutput" class="form-control" readonly rows="4"></textarea>
-                <button class="btn-copy-inline" id="btnCopyFind">📋 Copy</button>
             </div>
 
             <div class="input-group">

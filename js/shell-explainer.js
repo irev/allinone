@@ -230,7 +230,7 @@ function explainCommand() {
     
     html += '<ol style="margin: 0;">';
     parts.forEach((part, i) => {
-        html += `<li><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">${escapeHtml(part)}</code></li>`;
+        html += `<li><code>${escapeHtml(part)}</code></li>`;
         html += explainPart(part);
     });
     html += '</ol>';
@@ -378,7 +378,7 @@ function displayExamples() {
             .forEach(ex => {
                 html += `
                     <button class="btn btn-sm btn-secondary example-cmd-btn" style="text-align: left; justify-content: flex-start; flex-direction: column; align-items: flex-start;">
-                        <code style="font-size: 0.85rem; display: block; margin-bottom: 0.25rem;">${escapeHtml(ex.cmd)}</code>
+                        <code>${escapeHtml(ex.cmd)}</code>
                         <small style="opacity: 0.8;">${ex.desc}</small>
                     </button>
                 `;
@@ -436,5 +436,8 @@ export function render(container) {
                 showPaste: true
             });
         }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }

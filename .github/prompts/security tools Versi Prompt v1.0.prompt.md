@@ -106,3 +106,8 @@ Repositori ini menjadi satu portal praktis untuk:
   - Input: Teks
   - Output: Hash
 - Analisis cepat keamanan sisi-klien
+
+
+# Design Input Form on tool Container
+- jika length input/output panjang jadikan input satu colom ex: col-12
+- jika length input/output pendek bisa dua kolom ex: col-6 sesuaikan dengan kebutuhan minimal col-3

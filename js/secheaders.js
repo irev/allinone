@@ -3,6 +3,8 @@
  * Analyze HTTP security headers and provide recommendations
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
   container.innerHTML = `
     <div class="tool-section">
@@ -402,4 +404,15 @@ permissions-policy: camera=(), microphone=(), geolocation=()`;
       checkHeaders();
     }
   });
+
+  // Add copy/paste buttons to textarea
+  setTimeout(() => {
+    utils.addTextareaActions(headersInput, {
+      showCopy: true,
+      showPaste: true
+    });
+
+    // Make info box collapsible
+    utils.initAllCollapsibles(container);
+  }, 100);
 }

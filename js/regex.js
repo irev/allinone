@@ -266,8 +266,8 @@ export function render(container) {
           ${matches.length} ${matches.length === 1 ? 'Match' : 'Matches'} Found
         </div>
         <div style="font-size: 0.9rem; opacity: 0.9;">
-          Pattern: <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 3px;">${escapeHtml(regex.source)}</code><br>
-          Flags: <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 3px;">${regex.flags || 'none'}</code>
+          Pattern: <code>${escapeHtml(regex.source)}</code><br>
+          Flags: <code>${regex.flags || 'none'}</code>
         </div>
       </div>
     `;
@@ -315,7 +315,7 @@ export function render(container) {
           <div style="padding: 1rem; background: rgba(255,255,255,0.05); border-left: 3px solid var(--primary-color); border-radius: 4px;">
             <div style="font-weight: bold; margin-bottom: 0.5rem;">Match ${matchIndex + 1} at position ${match.index}</div>
             <div style="margin-bottom: 0.5rem;">
-              <strong>Full match:</strong> <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 3px;">${escapeHtml(match.fullMatch)}</code>
+              <strong>Full match:</strong> <code>${escapeHtml(match.fullMatch)}</code>
             </div>
         `;
 
@@ -323,7 +323,7 @@ export function render(container) {
           groupsHtml += '<div style="margin-top: 0.5rem;"><strong>Groups:</strong><ul style="margin: 0.5rem 0; padding-left: 1.5rem;">';
           match.groups.forEach((group, groupIndex) => {
             if (group !== undefined) {
-              groupsHtml += `<li>Group ${groupIndex + 1}: <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 3px;">${escapeHtml(group)}</code></li>`;
+              groupsHtml += `<li>Group ${groupIndex + 1}: <code>${escapeHtml(group)}</code></li>`;
             }
           });
           groupsHtml += '</ul></div>';
@@ -332,7 +332,7 @@ export function render(container) {
         if (Object.keys(match.namedGroups).length > 0) {
           groupsHtml += '<div style="margin-top: 0.5rem;"><strong>Named Groups:</strong><ul style="margin: 0.5rem 0; padding-left: 1.5rem;">';
           for (const [name, value] of Object.entries(match.namedGroups)) {
-            groupsHtml += `<li>${name}: <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 3px;">${escapeHtml(value)}</code></li>`;
+            groupsHtml += `<li>${name}: <code>${escapeHtml(value)}</code></li>`;
           }
           groupsHtml += '</ul></div>';
         }
@@ -462,5 +462,8 @@ Invalid: 12-345-6789, 123-45-67890`;
       showCopy: true,
       showPaste: true
     });
+
+    // Make alerts collapsible
+    utils.initAllCollapsibles(container);
   }, 100);
 }

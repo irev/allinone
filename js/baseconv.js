@@ -3,6 +3,8 @@
  * Convert between decimal, hex, base36, base62, and binary
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
   container.innerHTML = `
     <div class="tool-section">
@@ -208,12 +210,9 @@ export function render(container) {
               ${base.name}
               ${isHighlighted ? '<span style="font-size: 0.7rem; padding: 0.2rem 0.4rem; background: #00bcd4; color: black; border-radius: 3px; margin-left: 0.5rem;">INPUT</span>' : ''}
             </div>
-            <button class="btn-copy-inline" data-value="${escapeAttr(base.value)}" style="background: rgba(255,255,255,0.1); border: none; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">
-              📋 Copy
-            </button>
           </div>
           <div style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 0.5rem;">${base.description}</div>
-          <div class="code-block" style="font-size: 0.95rem; word-break: break-all; font-family: 'Courier New', monospace;">
+          <div class="baseconv-output code-block" style="font-size: 0.95rem; word-break: break-all; font-family: 'Courier New', monospace;" data-copy-value="${escapeAttr(base.value)}">
             ${escapeHtml(base.value)}
           </div>
           <div style="font-size: 0.75rem; opacity: 0.6; margin-top: 0.5rem;">
@@ -244,22 +243,22 @@ export function render(container) {
     conversionResults.innerHTML = html;
     outputSection.style.display = 'block';
 
-    // Add copy button listeners
-    const copyButtons = container.querySelectorAll('.btn-copy-inline');
-    copyButtons.forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        const value = e.currentTarget.getAttribute('data-value');
-        try {
-          await navigator.clipboard.writeText(value);
-          const originalText = e.currentTarget.textContent;
-          e.currentTarget.textContent = '✓ Copied!';
-          setTimeout(() => {
-            e.currentTarget.textContent = originalText;
-          }, 2000);
-        } catch (error) {
-          alert('Failed to copy');
-        }
-      });
+    // Add copy buttons to all outputs
+    const outputs = container.querySelectorAll('.baseconv-output');
+    outputs.forEach(output => {
+      const copyValue = output.getAttribute('data-copy-value');
+      if (copyValue) {
+        // Create temporary element with the value to copy
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+        wrapper.style.display = 'inline-block';
+        wrapper.style.width = '100%';
+        
+        output.parentNode.insertBefore(wrapper, output);
+        wrapper.appendChild(output);
+        
+        utils.addCopyToOutput(output, copyValue);
+      }
     });
   }
 
@@ -306,4 +305,9 @@ export function render(container) {
       convertAll();
     }
   });
+
+  // Make info sections collapsible
+  setTimeout(() => {
+    utils.initAllCollapsibles(container);
+  }, 100);
 }

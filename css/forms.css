@@ -487,3 +487,150 @@ body.dark-mode .textarea-action-btn:hover {
     padding-right: 70px;
 }
 
+/* Output Copy Button */
+.output-wrapper {
+    position: relative;
+    display: block;
+}
+
+.output-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    opacity: 0.7;
+}
+
+.output-copy-btn:hover {
+    opacity: 1;
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.output-copy-btn.success {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+    opacity: 1;
+}
+
+body.dark-mode .output-copy-btn {
+    background: rgba(31, 41, 55, 0.9);
+    border-color: rgba(75, 85, 99, 0.6);
+    backdrop-filter: blur(8px);
+}
+
+.output-wrapper .output-box,
+.output-wrapper pre,
+.output-wrapper .code-block {
+    padding-right: 50px !important;
+}
+
+/* Code Block Styling */
+code {
+    background: var(--bg-tertiary);
+    color: var(--primary-color);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-family: 'Fira Mono', 'Courier New', monospace;
+    font-size: 0.98em;
+    border: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+}
+
+pre code {
+    display: block;
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Fira Mono', 'Courier New', monospace;
+    font-size: 1em;
+    color: var(--primary-color);
+    transition: background 0.2s;
+}
+}
+
+body.dark-mode code {
+    background: #313235;
+    color: #e0e6f7;
+    border-color: #444;
+    font-family: 'Fira Mono', 'Courier New', monospace;
+}
+}
+
+body.dark-mode pre code {
+    background: #313235;
+    color: #e0e6f7;
+    border-color: #444;
+    font-family: 'Fira Mono', 'Courier New', monospace;
+}
+code:hover, pre code:hover {
+    background: #393a40;
+    color: #fff;
+}
+}
+
+/* Collapsible Sections */
+.collapse-toggle {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    margin-bottom: var(--spacing-sm);
+}
+
+.collapse-toggle:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.collapse-toggle .toggle-icon {
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.collapse-toggle.collapsed .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.collapsible-content {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.dark-mode .collapse-toggle {
+    background: rgba(31, 41, 55, 0.8);
+    border-color: rgba(75, 85, 99, 0.6);
+}

@@ -262,7 +262,7 @@ function displaySnippets() {
                     ` : ''}
                 </div>
                 <div class="snippet-preview-${snippet.id}" style="display: none; padding: 1rem;">
-                    <pre style="background: #f9fafb; padding: 1rem; border-radius: 4px; overflow-x: auto; margin: 0;"><code>${escapeHtml(snippet.code)}</code></pre>
+                    <code>${escapeHtml(snippet.code)}</code>
                     <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
                         <button class="btn btn-sm btn-primary copy-snippet-btn" data-code="${escapeHtml(snippet.code)}">
                             📋 Copy Code

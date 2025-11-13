@@ -282,5 +282,8 @@ export function render(container) {
       showCopy: true,
       showPaste: true
     });
+
+    // Make info alerts collapsible
+    utils.initAllCollapsibles(container);
   }, 100);
 }

@@ -19,9 +19,6 @@ export function render(container) {
         // Initial update
         updateCronExpression();
         
-        // Copy button
-        document.getElementById('btnCopyCron')?.addEventListener('click', () => copyToClipboard('cronOutput'));
-        
         // Redirect checkbox
         document.getElementById('cronRedirect')?.addEventListener('change', () => {
             document.getElementById('cronLogPath').style.display = 
@@ -130,7 +127,6 @@ function initCronBuilder() {
             <div class="input-group">
                 <label>Generated Cron Expression</label>
                 <textarea id="cronOutput" class="form-control" readonly rows="3"></textarea>
-                <button class="btn-copy-inline" id="btnCopyCron">📋 Copy</button>
             </div>
 
             <div class="input-group">

@@ -1,4 +1,6 @@
 // APT Helper / Package Manager Tool
+import { utils } from './main.js';
+
 export function render(container) {
     container.innerHTML = initAptHelper();
     
@@ -10,10 +12,6 @@ export function render(container) {
         document.getElementById('pkgAction')?.addEventListener('change', updatePkgCommand);
         document.getElementById('pkgSudo')?.addEventListener('change', updatePkgCommand);
         document.getElementById('pkgYes')?.addEventListener('change', updatePkgCommand);
-        
-        // Copy buttons
-        document.getElementById('btnCopyPkg')?.addEventListener('click', () => copyToClipboard('pkgOutput'));
-        document.getElementById('btnCopyPkgSearch')?.addEventListener('click', () => copyToClipboard('pkgSearchOutput'));
         
         // Search button
         document.getElementById('btnSearchPkg')?.addEventListener('click', searchPackage);
@@ -39,6 +37,25 @@ export function render(container) {
                 setQuickPkg(commands[index]);
             });
         });
+
+        // Add copy buttons to outputs
+        const pkgOutput = document.getElementById('pkgOutput');
+        const pkgSearchOutput = document.getElementById('pkgSearchOutput');
+        if (pkgOutput) {
+            utils.addTextareaActions(pkgOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+        if (pkgSearchOutput) {
+            utils.addTextareaActions(pkgSearchOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 
@@ -98,7 +115,6 @@ function initAptHelper() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="pkgOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" id="btnCopyPkg">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -136,7 +152,6 @@ function initAptHelper() {
             <div class="input-group">
                 <label>Search Command</label>
                 <textarea id="pkgSearchOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" id="btnCopyPkgSearch">📋 Copy</button>
             </div>
         </div>
     `;

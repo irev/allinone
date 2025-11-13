@@ -4,6 +4,8 @@
  * Note: Due to browser security restrictions, some tests require a proxy server
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
     container.innerHTML = `
         <div class="tool-header">
@@ -212,6 +214,17 @@ export function render(container) {
         sslUrl.value = '';
         sslResult.innerHTML = '';
     });
+
+    // Add copy/paste buttons to textarea
+    setTimeout(() => {
+        utils.addTextareaActions(corsHeaders, {
+            showCopy: true,
+            showPaste: true
+        });
+
+        // Make alerts collapsible
+        utils.initAllCollapsibles(container);
+    }, 100);
 
     // CORS testing implementation
     async function testCORS(url, method, headers) {

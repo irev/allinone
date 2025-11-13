@@ -107,14 +107,11 @@ function initLogAnalyzer() {
             <h4>📋 Log Format Examples</h4>
             <div style="font-family: monospace; font-size: 0.85rem;">
                 <p><strong>Nginx Combined:</strong></p>
-                <code style="display: block; background: #f3f4f6; padding: 0.5rem; border-radius: 3px; overflow-x: auto;">
-                192.168.1.1 - - [13/Nov/2025:10:30:45 +0000] "GET /api/users HTTP/1.1" 200 1234 "-" "Mozilla/5.0"
-                </code>
+                <code>192.168.1.1 - - [13/Nov/2025:10:30:45 +0000] "GET /api/users HTTP/1.1" 200 1234 "-" "Mozilla/5.0"</code>
                 
                 <p style="margin-top: 1rem;"><strong>Apache Combined:</strong></p>
-                <code style="display: block; background: #f3f4f6; padding: 0.5rem; border-radius: 3px; overflow-x: auto;">
-                127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326
-                </code>
+                <code>
+                127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326</code>
             </div>
         </div>
     `;
@@ -399,5 +396,8 @@ export function render(container) {
                 showPaste: true
             });
         }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }

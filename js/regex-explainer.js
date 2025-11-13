@@ -253,7 +253,7 @@ function displayCommonPatterns() {
     commonPatterns.forEach(p => {
         html += `
             <button class="btn btn-sm btn-secondary common-pattern-btn" style="text-align: left; justify-content: flex-start;">
-                <strong>${p.name}:</strong> <code style="margin-left: 0.5rem;">${escapeHtml(p.pattern)}</code>
+                <strong>${p.name}:</strong> <code>${escapeHtml(p.pattern)}</code>
             </button>
         `;
     });
@@ -312,5 +312,8 @@ export function render(container) {
                 showPaste: true
             });
         }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }

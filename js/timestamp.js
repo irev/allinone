@@ -225,8 +225,8 @@ function convertDateToUnix() {
         <div class="alert alert-success">
             <h4 style="margin-top: 0;">✅ Conversion Result</h4>
             <div style="display: grid; gap: 0.75rem; font-family: 'Courier New', monospace;">
-                <div><strong>UNIX (seconds):</strong><br><code style="font-size: 1.2rem;">${unixSeconds}</code></div>
-                <div><strong>UNIX (milliseconds):</strong><br><code style="font-size: 1.2rem;">${unixMillis}</code></div>
+                <div><strong>UNIX (seconds):</strong><br><code>${unixSeconds}</code></div>
+                <div><strong>UNIX (milliseconds):</strong><br><code>${unixMillis}</code></div>
                 <div><strong>Full Date:</strong><br>${date.toString()}</div>
                 <div><strong>ISO 8601:</strong><br>${date.toISOString()}</div>
                 <div><strong>Relative:</strong><br>${relativeTime}</div>

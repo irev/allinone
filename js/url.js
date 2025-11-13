@@ -59,9 +59,6 @@ export function render(container) {
                 <button id="btnEncode" class="btn btn-primary">
                     🔒 Encode URL
                 </button>
-                <button id="btnCopyEncoded" class="btn btn-outline">
-                    📋 Salin Hasil
-                </button>
                 <button id="btnExampleEncode" class="btn btn-outline">
                     💡 Contoh
                 </button>
@@ -103,9 +100,6 @@ export function render(container) {
             <div class="btn-group">
                 <button id="btnDecode" class="btn btn-secondary">
                     🔓 Decode URL
-                </button>
-                <button id="btnCopyDecoded" class="btn btn-outline">
-                    📋 Salin Hasil
                 </button>
                 <button id="btnExampleDecode" class="btn btn-outline">
                     💡 Contoh
@@ -155,8 +149,6 @@ function initializeEventListeners(container) {
     // Buttons
     const btnEncode = container.querySelector('#btnEncode');
     const btnDecode = container.querySelector('#btnDecode');
-    const btnCopyEncoded = container.querySelector('#btnCopyEncoded');
-    const btnCopyDecoded = container.querySelector('#btnCopyDecoded');
     const btnClearEncode = container.querySelector('#btnClearEncode');
     const btnClearDecode = container.querySelector('#btnClearDecode');
     const btnExampleEncode = container.querySelector('#btnExampleEncode');
@@ -219,32 +211,6 @@ function initializeEventListeners(container) {
         }
     });
 
-    // Event: Copy Encoded
-    btnCopyEncoded.addEventListener('click', async () => {
-        const text = encodeOutput.textContent;
-        if (text && text.trim()) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showTempMessage(btnCopyEncoded, '✅ Tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopyEncoded, '❌ Gagal menyalin');
-            }
-        }
-    });
-
-    // Event: Copy Decoded
-    btnCopyDecoded.addEventListener('click', async () => {
-        const text = decodeOutput.textContent;
-        if (text && text.trim()) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showTempMessage(btnCopyDecoded, '✅ Tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopyDecoded, '❌ Gagal menyalin');
-            }
-        }
-    });
-
     // Event: Clear Encode
     btnClearEncode.addEventListener('click', () => {
         encodeInput.value = '';
@@ -283,6 +249,13 @@ function initializeEventListeners(container) {
             showCopy: true,
             showPaste: true
         });
+
+        // Add copy buttons to outputs
+        utils.addCopyToOutput(encodeOutput);
+        utils.addCopyToOutput(decodeOutput);
+
+        // Make alerts collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 

@@ -78,15 +78,6 @@ export function render(container) {
                     <div id="hashOutput" class="output-box"></div>
                 </div>
 
-                <div class="btn-group">
-                    <button id="btnCopyHash" class="btn btn-outline">
-                        📋 Salin Hash
-                    </button>
-                    <button id="btnCopyUppercase" class="btn btn-outline">
-                        📋 Salin (UPPERCASE)
-                    </button>
-                </div>
-
                 <div class="form-group mt-2">
                     <label class="form-label">Informasi Hash:</label>
                     <div class="alert alert-info">
@@ -181,33 +172,6 @@ function initializeEventListeners(container) {
         hashOutput.textContent = '';
         hashResults.classList.add('hidden');
     });
-
-    // Event: Copy Hash (lowercase)
-    btnCopyHash.addEventListener('click', async () => {
-        const hash = hashOutput.textContent;
-        if (hash && hash.trim()) {
-            try {
-                await navigator.clipboard.writeText(hash.toLowerCase());
-                showTempMessage(btnCopyHash, '✅ Hash tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopyHash, '❌ Gagal menyalin');
-            }
-        }
-    });
-
-    // Event: Copy Hash (uppercase)
-    btnCopyUppercase.addEventListener('click', async () => {
-        const hash = hashOutput.textContent;
-        if (hash && hash.trim()) {
-            try {
-                await navigator.clipboard.writeText(hash.toUpperCase());
-                showTempMessage(btnCopyUppercase, '✅ Hash tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopyUppercase, '❌ Gagal menyalin');
-            }
-        }
-    });
-
     // Auto-update algorithm label when selection changes
     hashAlgorithm.addEventListener('change', () => {
         hashResults.classList.add('hidden');
@@ -219,6 +183,15 @@ function initializeEventListeners(container) {
             showCopy: true,
             showPaste: true
         });
+
+        // Add copy button to output
+        const hashOutput = container.querySelector('#hashOutput');
+        const hashOutputUppercase = container.querySelector('#hashOutputUppercase');
+        if (hashOutput) utils.addCopyToOutput(hashOutput);
+        if (hashOutputUppercase) utils.addCopyToOutput(hashOutputUppercase);
+
+        // Make alerts collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 

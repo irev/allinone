@@ -20,8 +20,19 @@ export function render(container) {
         // Button listeners
         document.getElementById('btnGenerateGrep')?.addEventListener('click', generateGrepCommand);
         document.getElementById('btnClearGrep')?.addEventListener('click', clearGrepForm);
-        document.getElementById('btnCopyGrep')?.addEventListener('click', () => copyToClipboard('grepOutput'));
         document.getElementById('btnExportGrep')?.addEventListener('click', exportGrepCommand);
+
+        // Add copy button to output
+        const grepOutput = document.getElementById('grepOutput');
+        if (grepOutput) {
+            utils.addTextareaActions(grepOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 
@@ -104,7 +115,6 @@ function initGrepBuilder() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="grepOutput" class="form-control" readonly rows="4"></textarea>
-                <button class="btn-copy-inline" id="btnCopyGrep">📋 Copy</button>
             </div>
 
             <div class="input-group">

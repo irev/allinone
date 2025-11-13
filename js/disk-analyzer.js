@@ -1,4 +1,6 @@
 // Disk Analyzer Tool
+import { utils } from './main.js';
+
 export function render(container) {
     container.innerHTML = initDiskAnalyzer();
     
@@ -20,9 +22,6 @@ export function render(container) {
         // Initial update
         updateDiskCommand();
         
-        // Copy button
-        document.getElementById('btnCopyDisk')?.addEventListener('click', () => copyToClipboard('diskOutput'));
-        
         // Attach quick command buttons
         const quickBtns = container.querySelectorAll('.btn-secondary.btn-sm');
         quickBtns.forEach(btn => {
@@ -36,6 +35,18 @@ export function render(container) {
                 else if (cmd.includes('100MB')) setQuickDiskCommand('find / -type f -size +100M 2>/dev/null');
             });
         });
+
+        // Add copy button to output
+        const diskOutput = document.getElementById('diskOutput');
+        if (diskOutput) {
+            utils.addTextareaActions(diskOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 
@@ -116,7 +127,6 @@ function initDiskAnalyzer() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="diskOutput" class="form-control" readonly rows="3"></textarea>
-                <button class="btn-copy-inline" id="btnCopyDisk">📋 Copy</button>
             </div>
 
             <div class="input-group">

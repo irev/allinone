@@ -47,9 +47,6 @@ export function render(container) {
                 <button id="btnEncode" class="btn btn-primary">
                     🔒 Encode ke Base64
                 </button>
-                <button id="btnCopyEncoded" class="btn btn-outline">
-                    📋 Salin Hasil
-                </button>
                 <button id="btnClearEncode" class="btn btn-danger">
                     🗑️ Bersihkan
                 </button>
@@ -83,9 +80,6 @@ export function render(container) {
                 <button id="btnDecode" class="btn btn-secondary">
                     🔓 Decode dari Base64
                 </button>
-                <button id="btnCopyDecoded" class="btn btn-outline">
-                    📋 Salin Hasil
-                </button>
                 <button id="btnClearDecode" class="btn btn-danger">
                     🗑️ Bersihkan
                 </button>
@@ -118,8 +112,6 @@ function initializeEventListeners(container) {
     // Buttons
     const btnEncode = container.querySelector('#btnEncode');
     const btnDecode = container.querySelector('#btnDecode');
-    const btnCopyEncoded = container.querySelector('#btnCopyEncoded');
-    const btnCopyDecoded = container.querySelector('#btnCopyDecoded');
     const btnClearEncode = container.querySelector('#btnClearEncode');
     const btnClearDecode = container.querySelector('#btnClearDecode');
 
@@ -157,33 +149,7 @@ function initializeEventListeners(container) {
         }
     });
 
-    // Event: Copy Encoded
-    btnCopyEncoded.addEventListener('click', async () => {
-        const text = encodeOutput.textContent;
-        if (text && text.trim()) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showTempMessage(btnCopyEncoded, '✅ Tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopyEncoded, '❌ Gagal menyalin');
-            }
-        }
-    });
-
     // Event: Copy Decoded
-    btnCopyDecoded.addEventListener('click', async () => {
-        const text = decodeOutput.textContent;
-        if (text && text.trim()) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showTempMessage(btnCopyDecoded, '✅ Tersalin!');
-            } catch (error) {
-                showTempMessage(btnCopyDecoded, '❌ Gagal menyalin');
-            }
-        }
-    });
-
-    // Event: Clear Encode
     btnClearEncode.addEventListener('click', () => {
         encodeInput.value = '';
         encodeOutput.textContent = '';
@@ -206,6 +172,13 @@ function initializeEventListeners(container) {
             showCopy: true,
             showPaste: true
         });
+
+        // Add copy buttons to output boxes
+        utils.addCopyToOutput(encodeOutput);
+        utils.addCopyToOutput(decodeOutput);
+
+        // Make info alerts collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 

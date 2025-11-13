@@ -52,9 +52,6 @@ function initLorem() {
                     <button id="btnGenLorem" class="btn btn-primary">
                         📝 Generate Lorem Ipsum
                     </button>
-                    <button id="btnCopyLorem" class="btn btn-secondary">
-                        📋 Copy
-                    </button>
                 </div>
                 
                 <div class="form-group" style="margin-top: 1rem;">
@@ -155,9 +152,6 @@ function initLorem() {
                 <div class="button-group">
                     <button id="btnGenRandom" class="btn btn-primary">
                         🎲 Generate Random Data
-                    </button>
-                    <button id="btnCopyRandom" class="btn btn-secondary">
-                        📋 Copy
                     </button>
                     <button id="btnExportCSV" class="btn btn-secondary">
                         📥 Export CSV
@@ -494,8 +488,6 @@ export function render(container) {
         // Event listeners
         document.getElementById('btnGenLorem')?.addEventListener('click', generateLorem);
         document.getElementById('btnGenRandom')?.addEventListener('click', generateRandomData);
-        document.getElementById('btnCopyLorem')?.addEventListener('click', () => copyToClipboard('loremOutput'));
-        document.getElementById('btnCopyRandom')?.addEventListener('click', () => copyToClipboard('randomOutput'));
         document.getElementById('btnExportCSV')?.addEventListener('click', exportCSV);
         
         // Auto-generate on change
@@ -545,5 +537,8 @@ export function render(container) {
                 showPaste: false
             });
         }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }

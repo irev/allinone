@@ -526,6 +526,116 @@ export const utils = {
                 showPaste: !textarea.readOnly
             });
         });
+    },
+
+    /**
+     * Add copy button to output boxes and code elements
+     * @param {HTMLElement} element - The output element
+     * @param {string} customValue - Optional custom value to copy instead of element text
+     */
+    addCopyToOutput(element, customValue = null) {
+        if (!element || element.dataset.copyAdded) return;
+        
+        element.dataset.copyAdded = 'true';
+
+        // Wrap element if not already wrapped
+        let wrapper = element.parentElement;
+        if (!wrapper.classList.contains('output-wrapper')) {
+            wrapper = document.createElement('div');
+            wrapper.className = 'output-wrapper';
+            element.parentNode.insertBefore(wrapper, element);
+            wrapper.appendChild(element);
+        }
+
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'output-copy-btn';
+        copyBtn.innerHTML = '📄';
+        copyBtn.title = 'Copy to clipboard';
+        
+        copyBtn.addEventListener('click', async () => {
+            try {
+                const text = customValue || element.textContent || element.innerText;
+                await navigator.clipboard.writeText(text);
+                
+                // Flash success
+                copyBtn.classList.add('success');
+                copyBtn.innerHTML = '✓';
+                setTimeout(() => {
+                    copyBtn.classList.remove('success');
+                    copyBtn.innerHTML = '📄';
+                }, 1500);
+            } catch (error) {
+                console.error('Copy failed:', error);
+            }
+        });
+
+        wrapper.appendChild(copyBtn);
+    },
+
+    /**
+     * Initialize copy buttons for all output boxes in container
+     */
+    initAllOutputCopy(container) {
+        const outputs = container.querySelectorAll('.output-box, pre code, .code-block');
+        outputs.forEach(output => {
+            utils.addCopyToOutput(output);
+        });
+    },
+
+    /**
+     * Make an element collapsible with toggle button
+     * @param {HTMLElement} element - Element to make collapsible
+     * @param {string} title - Title for the toggle button
+     */
+    makeCollapsible(element, title = 'Toggle') {
+        if (!element || element.dataset.collapsible) return;
+        
+        element.dataset.collapsible = 'true';
+
+        // Create toggle button
+        const toggleBtn = document.createElement('button');
+        toggleBtn.type = 'button';
+        toggleBtn.className = 'collapse-toggle';
+        toggleBtn.innerHTML = `<span class="toggle-icon">▼</span> ${title}`;
+        
+        // Wrap content
+        const content = document.createElement('div');
+        content.className = 'collapsible-content';
+        
+        // Move all children to content wrapper
+        while (element.firstChild) {
+            content.appendChild(element.firstChild);
+        }
+        
+        element.appendChild(toggleBtn);
+        element.appendChild(content);
+        
+        // Toggle functionality
+        toggleBtn.addEventListener('click', () => {
+            const isCollapsed = content.style.display === 'none';
+            content.style.display = isCollapsed ? 'block' : 'none';
+            toggleBtn.querySelector('.toggle-icon').textContent = isCollapsed ? '▼' : '▶';
+            toggleBtn.classList.toggle('collapsed', !isCollapsed);
+        });
+    },
+
+    /**
+     * Initialize collapsible sections for alerts and info boxes
+     * Only makes collapsible if content is long (> 200 characters)
+     */
+    initAllCollapsibles(container) {
+        // Make alerts collapsible only if content is long
+        const alerts = container.querySelectorAll('.alert-info, .alert-warning');
+        alerts.forEach((alert, index) => {
+            const textContent = alert.textContent || '';
+            // Only make collapsible if content is longer than 200 characters
+            if (textContent.length > 200) {
+                const title = alert.querySelector('strong')?.textContent || `Info ${index + 1}`;
+                utils.makeCollapsible(alert, title);
+            }
+        });
     }
 };
 

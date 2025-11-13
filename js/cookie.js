@@ -514,5 +514,8 @@ Set-Cookie: preferences=dark_mode; Path=/; Expires=Wed, 13 Nov 2026 12:00:00 GMT
       showCopy: true,
       showPaste: true
     });
+
+    // Make info alerts collapsible
+    utils.initAllCollapsibles(container);
   }, 100);
 }

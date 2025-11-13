@@ -13,10 +13,6 @@ export function render(container) {
         // Initial update
         updateServiceCommand();
         
-        // Copy buttons
-        document.getElementById('btnCopyService')?.addEventListener('click', () => copyToClipboard('serviceOutput'));
-        document.getElementById('btnCopyLog')?.addEventListener('click', () => copyToClipboard('logOutput'));
-        
         // Attach quick service buttons
         const quickBtns = container.querySelectorAll('.btn-secondary.btn-sm');
         const commands = [
@@ -29,9 +25,28 @@ export function render(container) {
         ];
         quickBtns.forEach((btn, index) => {
             btn.addEventListener('click', () => {
-                setQuickService(commands[index]);
+                document.getElementById('serviceOutput').value = commands[index];
             });
         });
+
+        // Add copy buttons to outputs
+        const serviceOutput = document.getElementById('serviceOutput');
+        const logOutput = document.getElementById('logOutput');
+        if (serviceOutput) {
+            utils.addTextareaActions(serviceOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+        if (logOutput) {
+            utils.addTextareaActions(logOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+
+        // Make info sections collapsible
+        utils.initAllCollapsibles(container);
     }, 100);
 }
 
@@ -76,7 +91,6 @@ function initServiceControl() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="serviceOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" id="btnCopyService">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -94,7 +108,6 @@ function initServiceControl() {
             <div class="input-group">
                 <label>Log Command</label>
                 <textarea id="logOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" id="btnCopyLog">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -171,23 +184,4 @@ function updateLogCommand() {
     }
 
     document.getElementById('logOutput').value = command;
-}
-
-function setQuickService(cmd) {
-    document.getElementById('serviceOutput').value = cmd;
-}
-
-function copyToClipboard(elementId) {
-    const element = document.getElementById(elementId);
-    if (element) {
-        element.select();
-        document.execCommand('copy');
-        
-        const btn = event?.target?.closest('button');
-        if (btn) {
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '✅ Copied!';
-            setTimeout(() => btn.innerHTML = originalText, 2000);
-        }
-    }
 }
