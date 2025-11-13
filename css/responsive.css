@@ -1,0 +1,76 @@
+/* ===================================
+   Responsive Design - Mobile & Tablet
+   =================================== */
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .main-wrapper {
+        margin-left: 0;
+    }
+    
+    .btn-icon {
+        display: block;
+    }
+    
+    .page-title {
+        font-size: 1.25rem;
+    }
+    
+    .content-area {
+        padding: var(--spacing-md);
+    }
+    
+    .tool-container {
+        padding: var(--spacing-md);
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .button-group .btn,
+    .button-group .btn-primary,
+    .button-group .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .sidebar {
+        width: 280px;
+    }
+    
+    .radio-group,
+    .checkbox-group {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .tool-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+    
+    .content-area {
+        padding: var(--spacing-sm);
+    }
+    
+    .tool-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .info-box {
+        padding: var(--spacing-md);
+    }
+}

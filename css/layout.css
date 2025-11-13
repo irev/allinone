@@ -1,0 +1,39 @@
+/* ===================================
+   Layout & Structure
+   =================================== */
+
+.main-wrapper {
+    flex: 1;
+    margin-left: 260px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--light-bg);
+    transition: margin-left 0.3s ease;
+}
+
+.main-wrapper.sidebar-hidden {
+    margin-left: 0;
+}
+
+.content-area {
+    flex: 1;
+    padding: var(--spacing-lg);
+}
+
+.tool-container {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    min-height: 500px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}

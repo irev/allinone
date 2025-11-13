@@ -22,7 +22,15 @@ const toolTitles = {
     'hash': 'Hash Generator',
     'converter': 'Text Converter',
     'htmlentities': 'HTML Entities Encoder/Decoder',
-    'jwt': 'JWT Inspector'
+    'jwt': 'JWT Inspector',
+    'hmac': 'HMAC Generator',
+    'sri': 'SRI Generator',
+    'cookie': 'Cookie Parser/Builder',
+    'secheaders': 'Security Headers Checker',
+    'csp': 'CSP Analyzer',
+    'xss': 'XSS Payload Encoder',
+    'regex': 'Regex Tester',
+    'baseconv': 'Base Converters'
 };
 
 /**

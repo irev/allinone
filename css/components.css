@@ -1,0 +1,117 @@
+/* ===================================
+   Tool Components & Output Styles
+   =================================== */
+
+.tool-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.tool-section h2 {
+    font-size: 1.875rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.tool-description {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.6;
+}
+
+/* Output Groups */
+.output-group {
+    margin: var(--spacing-lg) 0;
+}
+
+.output-group label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.output-box {
+    position: relative;
+    background-color: #f8fafc;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.output-content {
+    background-color: #f8fafc;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    min-height: 60px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.code-block {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+}
+
+/* Info Boxes */
+.info-box {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+    border-left: 4px solid var(--primary-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+.info-box h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    font-size: 1.25rem;
+}
+
+.info-box h4 {
+    color: var(--text-primary);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-xs);
+    font-size: 1rem;
+}
+
+.info-box p {
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.6;
+}
+
+.info-box ul {
+    margin-left: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.info-box li {
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.6;
+}
+
+.info-box code {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+
+/* Error Messages */
+.error-message {
+    background-color: #fee2e2;
+    border: 2px solid var(--danger-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    color: #991b1b;
+    font-weight: 500;
+}
