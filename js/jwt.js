@@ -14,7 +14,7 @@
  * Fungsi utama untuk render UI JWT Inspector
  * @param {HTMLElement} container - Container element untuk render
  */
-export async function render(container) {
+export function render(container) {
     container.innerHTML = `
         <div class="tool-header">
             <h2 class="tool-title">🔍 JWT Inspector</h2>

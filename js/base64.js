@@ -12,7 +12,7 @@
  * Fungsi utama untuk render UI Base64 tool
  * @param {HTMLElement} container - Container element untuk render
  */
-export async function render(container) {
+export function render(container) {
     // Buat HTML untuk tool
     container.innerHTML = `
         <div class="tool-header">

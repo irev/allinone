@@ -13,7 +13,7 @@
  * Fungsi utama untuk render UI Text Converter
  * @param {HTMLElement} container - Container element untuk render
  */
-export async function render(container) {
+export function render(container) {
     container.innerHTML = `
         <div class="tool-header">
             <h2 class="tool-title">🔄 Text Converter</h2>
