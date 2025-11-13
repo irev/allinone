@@ -106,22 +106,51 @@ export function render(container) {
 
             <div class="form-group" style="margin-top: 30px;">
                 <h3>Password Generator</h3>
+                
                 <div class="form-group">
-                    <label>Length: <input type="number" id="genLength" value="16" min="8" max="128" style="width: 80px;"></label>
+                    <label>Password Length: <strong id="genLengthValue">16</strong></label>
+                    <input 
+                        type="range" 
+                        id="genLength" 
+                        min="8"
+                        max="64"
+                        value="16"
+                        style="cursor: pointer; width: 100%; margin: 0.5rem 0;"
+                    />
+                    <div style="display: flex; justify-content: space-between; color: #6b7280; font-size: 0.875rem;">
+                        <span>8</span>
+                        <span>64</span>
+                    </div>
                 </div>
+                
                 <div class="form-group">
-                    <label><input type="checkbox" id="genLowercase" checked> Lowercase (a-z)</label><br>
-                    <label><input type="checkbox" id="genUppercase" checked> Uppercase (A-Z)</label><br>
-                    <label><input type="checkbox" id="genDigits" checked> Digits (0-9)</label><br>
-                    <label><input type="checkbox" id="genSpecial" checked> Special (!@#$%^&*)</label><br>
-                    <label><input type="checkbox" id="genAmbiguous"> Exclude ambiguous (0, O, l, I)</label>
+                    <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Character Types</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="genLowercase" checked> Lowercase (a-z)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="genUppercase" checked> Uppercase (A-Z)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="genDigits" checked> Digits (0-9)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="genSpecial" checked> Special (!@#$%^&*)</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="genAmbiguous"> Exclude ambiguous (0, O, l, I)</label>
+                    </div>
                 </div>
-                <button id="generateBtn" class="btn btn-primary">Generate Password</button>
+                
+                <button id="generateBtn" class="btn btn-primary">🎲 Generate Password</button>
+                
                 <div class="output-section" style="margin-top: 10px; display: none;" id="generatedSection">
                     <label><strong>Generated Password:</strong></label>
                     <input type="text" id="generatedPassword" class="form-control" readonly>
-                    <button id="copyGenBtn" class="btn btn-sm">Copy</button>
-                    <button id="analyzeGenBtn" class="btn btn-sm">Analyze</button>
+                    <div class="button-group" style="margin-top: 0.5rem;">
+                        <button id="copyGenBtn" class="btn btn-secondary btn-sm">📋 Copy</button>
+                        <button id="analyzeGenBtn" class="btn btn-secondary btn-sm">🔍 Analyze</button>
+                    </div>
                 </div>
             </div>
 
@@ -167,6 +196,27 @@ export function render(container) {
     const generatedPassword = container.querySelector('#generatedPassword');
     const copyGenBtn = container.querySelector('#copyGenBtn');
     const analyzeGenBtn = container.querySelector('#analyzeGenBtn');
+    const genLengthSlider = container.querySelector('#genLength');
+    const genLengthValue = container.querySelector('#genLengthValue');
+
+    // Update slider value display and background
+    function updateGenLengthSlider() {
+        if (genLengthSlider && genLengthValue) {
+            genLengthValue.textContent = genLengthSlider.value;
+            
+            // Update slider background gradient
+            const min = parseInt(genLengthSlider.min) || 8;
+            const max = parseInt(genLengthSlider.max) || 64;
+            const value = parseInt(genLengthSlider.value);
+            const percentage = ((value - min) / (max - min)) * 100;
+            
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const trackColor = isDarkMode ? '#374151' : '#e5e7eb';
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim() || '#3b82f6';
+            
+            genLengthSlider.style.background = `linear-gradient(to right, ${primaryColor} 0%, ${primaryColor} ${percentage}%, ${trackColor} ${percentage}%, ${trackColor} 100%)`;
+        }
+    }
 
     // Toggle password visibility
     toggleVisibility.addEventListener('click', () => {
@@ -192,6 +242,11 @@ export function render(container) {
             composition.style.display = 'none';
         }
     });
+
+    // Update slider on input
+    if (genLengthSlider) {
+        genLengthSlider.addEventListener('input', updateGenLengthSlider);
+    }
 
     // Generate password
     generateBtn.addEventListener('click', () => {
@@ -233,6 +288,9 @@ export function render(container) {
         passwordInput.value = generatedPassword.value;
         analyzePassword(generatedPassword.value);
     });
+
+    // Initialize slider
+    updateGenLengthSlider();
 
     // Analysis functions
     function analyzePassword(password) {

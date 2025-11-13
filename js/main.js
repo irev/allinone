@@ -37,6 +37,13 @@ const toolTitles = {
     'entropy': 'Password Strength & Entropy Calculator',
     'tlscors': 'TLS/SSL & CORS Tester',
     'sqli': 'SQL Injection Payload Encoder',
+    // New Tools
+    'json-formatter': 'JSON Formatter & Validator',
+    'timestamp': 'Timestamp Converter',
+    'uuid': 'UUID Generator',
+    'hash-identifier': 'Hash Identifier',
+    'lorem': 'Lorem Ipsum & Random Data Generator',
+    'qr-generator': 'QR Code Generator',
     // Linux Tools
     'find-generator': 'Find Command Generator',
     'grep-builder': 'Grep Command Builder',
