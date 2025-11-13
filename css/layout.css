@@ -19,15 +19,27 @@
 .content-area {
     flex: 1;
     padding: var(--spacing-lg);
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .tool-container {
     background: var(--bg-primary);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
     box-shadow: var(--shadow-md);
     min-height: 500px;
-    transition: background var(--transition-normal);
+    transition: all var(--transition-normal);
+    border: 1px solid var(--border-color);
+}
+
+.tool-container + .tool-container {
+    margin-top: var(--spacing-lg);
+}
+
+body.dark-mode .tool-container {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
 .loading {

@@ -3,20 +3,28 @@
    =================================== */
 
 .tool-header {
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-color);
 }
 
 .tool-title {
     font-size: 1.875rem;
     color: var(--text-primary);
     margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+    transition: color var(--transition-normal);
 }
 
 .section-title {
     font-size: 1.25rem;
     color: var(--text-primary);
     margin-bottom: var(--spacing-md);
+    margin-top: var(--spacing-xl);
     font-weight: 600;
+    transition: color var(--transition-normal);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .tool-section {
@@ -57,6 +65,15 @@
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
     transition: all var(--transition-normal);
+    min-height: 100px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.output-box:empty::before {
+    content: 'Output will appear here...';
+    color: var(--text-light);
+    font-style: italic;
 }
 
 .output-content {
@@ -117,6 +134,56 @@
 .info-box li {
     margin-bottom: var(--spacing-xs);
     line-height: 1.6;
+}
+
+/* Info Tables */
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-md) 0;
+    background-color: var(--bg-primary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.info-table tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color var(--transition-fast);
+}
+
+.info-table tr:last-child {
+    border-bottom: none;
+}
+
+.info-table tr:nth-child(even) {
+    background-color: var(--bg-secondary);
+}
+
+.info-table tr:hover {
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+body.dark-mode .info-table tr:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.info-table td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    vertical-align: top;
+    transition: all var(--transition-fast);
+}
+
+.info-table td:first-child {
+    font-weight: 600;
+    color: var(--text-primary);
+    width: 35%;
+    white-space: nowrap;
+}
+
+.info-table td:last-child {
+    color: var(--text-secondary);
+    word-break: break-word;
 }
 
 .info-box code {
@@ -182,4 +249,89 @@ body.dark-mode .alert-warning {
 
 body.dark-mode .alert-danger {
     background-color: rgba(239, 68, 68, 0.15);
+}
+
+/* Loading States */
+.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--bg-tertiary) 25%,
+        var(--bg-secondary) 50%,
+        var(--bg-tertiary) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.skeleton-text {
+    height: 1rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.skeleton-title {
+    height: 2rem;
+    width: 60%;
+    margin-bottom: var(--spacing-md);
+}
+
+.skeleton-box {
+    height: 150px;
+    width: 100%;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Pulse Animation for notifications */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
 }

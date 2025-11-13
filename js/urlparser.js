@@ -5,8 +5,8 @@
 
 export function render(container) {
     container.innerHTML = `
-        <div class="tool-container">
-            <h2>URL Parser & Normalizer</h2>
+        <div class="tool-header">
+            <h1 class="tool-title">URL Parser & Analyzer</h1>
             <p class="tool-description">
                 Parse and analyze URL components, normalize URLs, encode/decode URL parts, 
                 and validate URL structure.
@@ -122,7 +122,6 @@ export function render(container) {
             <div id="validationResult" style="margin-top: 20px;">
                 <!-- Validation messages -->
             </div>
-        </div>
     `;
 
     // Elements

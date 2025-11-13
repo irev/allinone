@@ -2,9 +2,25 @@
    Responsive Design - Mobile & Tablet
    =================================== */
 
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+    .content-area {
+        max-width: 100%;
+        padding: var(--spacing-lg);
+    }
+    
+    .tool-container {
+        padding: var(--spacing-lg);
+    }
+}
+
+/* Mobile Large (481px - 768px) */
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
+        width: 280px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
     }
     
     .sidebar.show {
@@ -15,8 +31,8 @@
         margin-left: 0;
     }
     
-    .btn-icon {
-        display: block;
+    #btnToggleSidebar {
+        display: flex;
     }
     
     .page-title {
@@ -29,34 +45,77 @@
     
     .tool-container {
         padding: var(--spacing-md);
+        border-radius: var(--radius-md);
+    }
+    
+    .tool-header {
+        padding-bottom: var(--spacing-sm);
+    }
+    
+    .tool-title {
+        font-size: 1.5rem;
     }
     
     .button-group {
         flex-direction: column;
+        gap: var(--spacing-sm);
     }
     
     .button-group .btn,
     .button-group .btn-primary,
-    .button-group .btn-secondary {
+    .button-group .btn-secondary,
+    .button-group .btn-danger {
         width: 100%;
         justify-content: center;
-    }
-    
-    .sidebar {
-        width: 280px;
     }
     
     .radio-group,
     .checkbox-group {
         flex-direction: column;
         gap: var(--spacing-xs);
+        align-items: flex-start;
     }
     
-    .tool-section h2 {
-        font-size: 1.5rem;
+    .tool-section h2,
+    .section-title {
+        font-size: 1.25rem;
+    }
+    
+    /* Form adjustments */
+    .form-control,
+    .form-select,
+    .output-box,
+    textarea {
+        font-size: 1rem;
+    }
+    
+    /* Table responsive */
+    .info-table {
+        font-size: 0.875rem;
+    }
+    
+    .info-table th,
+    .info-table td {
+        padding: var(--spacing-sm);
+    }
+    
+    /* Top bar adjustments */
+    .top-bar {
+        padding: var(--spacing-sm) var(--spacing-md);
+        gap: var(--spacing-sm);
+    }
+    
+    .action-buttons {
+        gap: var(--spacing-xs);
+    }
+    
+    .action-buttons .btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
     }
 }
 
+/* Mobile Small (max 480px) */
 @media (max-width: 480px) {
     .page-title {
         font-size: 1.1rem;
@@ -68,9 +127,115 @@
     
     .tool-container {
         padding: var(--spacing-sm);
+        border-radius: var(--radius-sm);
+    }
+    
+    .tool-title {
+        font-size: 1.25rem;
+    }
+    
+    .tool-header {
+        padding-bottom: var(--spacing-xs);
     }
     
     .info-box {
         padding: var(--spacing-md);
+        font-size: 0.875rem;
+    }
+    
+    .alert {
+        padding: var(--spacing-sm);
+        font-size: 0.875rem;
+    }
+    
+    /* Button size adjustments */
+    .btn,
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .btn-sm {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    /* Form control size adjustments */
+    .form-control,
+    .form-select,
+    textarea {
+        padding: var(--spacing-sm);
+        font-size: 1rem;
+    }
+    
+    .form-label {
+        font-size: 0.875rem;
+    }
+    
+    /* Sidebar adjustments */
+    .sidebar {
+        width: 260px;
+    }
+    
+    .nav-link {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.875rem;
+    }
+    
+    .sidebar-category h3 {
+        font-size: 0.75rem;
+        padding: var(--spacing-xs) var(--spacing-md);
+    }
+    
+    /* Table stack on small screens */
+    .info-table th:first-child,
+    .info-table td:first-child {
+        width: 40%;
+    }
+    
+    /* Top bar for very small screens */
+    .top-bar {
+        flex-wrap: wrap;
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .action-buttons {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: var(--spacing-xs);
+    }
+    
+    .action-buttons .btn {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .sidebar,
+    .top-bar,
+    .footer,
+    .btn-icon,
+    .action-buttons {
+        display: none;
+    }
+    
+    .main-wrapper {
+        margin-left: 0;
+    }
+    
+    .content-area {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .tool-container {
+        border: none;
+        box-shadow: none;
+        page-break-inside: avoid;
     }
 }

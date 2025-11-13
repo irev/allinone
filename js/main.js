@@ -101,11 +101,25 @@ function updateActiveNav(toolName) {
 }
 
 /**
- * Toggle sidebar on mobile
+ * Toggle sidebar visibility
  */
 function toggleSidebar() {
     if (sidebar && mainWrapper) {
-        sidebar.classList.toggle('show');
+        const btnShowSidebar = document.getElementById('btnShowSidebar');
+        
+        // For mobile: use 'show' class
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('show');
+        } else {
+            // For desktop: use 'hidden' class
+            const isHidden = sidebar.classList.toggle('hidden');
+            mainWrapper.classList.toggle('sidebar-hidden');
+            
+            // Show/hide button show sidebar di top-bar
+            if (btnShowSidebar) {
+                btnShowSidebar.style.display = isHidden ? 'flex' : 'none';
+            }
+        }
     }
 }
 
@@ -145,10 +159,21 @@ function initializeNavigation() {
         });
     });
     
-    // Setup sidebar toggle button
+    // Setup sidebar toggle buttons
     const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const btnHideSidebar = document.getElementById('btnHideSidebar');
+    const btnShowSidebar = document.getElementById('btnShowSidebar');
+    
     if (btnToggleSidebar) {
         btnToggleSidebar.addEventListener('click', toggleSidebar);
+    }
+    
+    if (btnHideSidebar) {
+        btnHideSidebar.addEventListener('click', toggleSidebar);
+    }
+    
+    if (btnShowSidebar) {
+        btnShowSidebar.addEventListener('click', toggleSidebar);
     }
 }
 
@@ -281,23 +306,27 @@ function initializeDarkMode() {
     const btnDarkMode = document.getElementById('btnDarkMode');
     const darkModeIcon = document.getElementById('darkModeIcon');
     
-    // Load saved preference
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    // Load saved preference or default to dark mode
+    const savedMode = localStorage.getItem('darkMode');
+    const isDarkMode = savedMode === null ? true : savedMode === 'true';
+    
     if (isDarkMode) {
         document.body.classList.add('dark-mode');
         if (darkModeIcon) darkModeIcon.textContent = '☀️';
     }
     
-    // Toggle dark mode
+    // Function to toggle dark mode
+    const toggleDarkMode = () => {
+        document.body.classList.toggle('dark-mode');
+        const isNowDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isNowDark);
+        const icon = isNowDark ? '☀️' : '🌙';
+        if (darkModeIcon) darkModeIcon.textContent = icon;
+    };
+    
+    // Toggle dark mode from top bar
     if (btnDarkMode) {
-        btnDarkMode.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isNowDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isNowDark);
-            if (darkModeIcon) {
-                darkModeIcon.textContent = isNowDark ? '☀️' : '🌙';
-            }
-        });
+        btnDarkMode.addEventListener('click', toggleDarkMode);
     }
 }
 
@@ -315,6 +344,12 @@ function initializeKeyboardShortcuts() {
         if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
             e.preventDefault();
             document.getElementById('btnDarkMode')?.click();
+        }
+        
+        // Ctrl/Cmd + B: Toggle sidebar
+        if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+            e.preventDefault();
+            toggleSidebar();
         }
         
         // Ctrl/Cmd + S: Save current state (autosave)

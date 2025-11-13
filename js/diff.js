@@ -5,8 +5,8 @@
 
 export function render(container) {
     container.innerHTML = `
-        <div class="tool-container">
-            <h2>Diff/Compare Tool</h2>
+        <div class="tool-header">
+            <h1 class="tool-title">Text Diff & Compare Tool</h1>
             <p class="tool-description">
                 Compare two text inputs side-by-side with diff highlighting, or compare 
                 hash values for security verification.
@@ -143,7 +143,6 @@ export function render(container) {
                     </div>
                 </div>
             </div>
-        </div>
 
         <style>
             .diff-output {

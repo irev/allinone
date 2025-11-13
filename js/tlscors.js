@@ -6,8 +6,8 @@
 
 export function render(container) {
     container.innerHTML = `
-        <div class="tool-container">
-            <h2>TLS/SSL & CORS Tester</h2>
+        <div class="tool-header">
+            <h1 class="tool-title">TLS/CORS Tester</h1>
             <p class="tool-description">
                 Test TLS/SSL certificate information and CORS policies. Due to browser 
                 security restrictions, some features are limited to same-origin or require 
@@ -125,7 +125,6 @@ export function render(container) {
                     </ul>
                 </div>
             </div>
-        </div>
     `;
 
     // Elements

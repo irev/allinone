@@ -8,8 +8,8 @@
 
 export function render(container) {
     container.innerHTML = `
-        <div class="tool-container">
-            <h2>SQL Injection Payload Encoder</h2>
+        <div class="tool-header">
+            <h1 class="tool-title">SQLi Payload Encoder</h1>
             
             <div class="alert alert-danger" style="border: 2px solid #dc3545;">
                 <h3 style="margin-top: 0;">⚠️ ETHICAL USE DISCLAIMER</h3>
@@ -134,7 +134,6 @@ export function render(container) {
                     <li><a href="https://github.com/payloadbox/sql-injection-payload-list" target="_blank">PayloadBox SQLi List</a></li>
                 </ul>
             </div>
-        </div>
     `;
 
     // Elements

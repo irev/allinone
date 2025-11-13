@@ -6,6 +6,7 @@
     /* Color Palette - Light Mode */
     --primary-color: #2563eb;
     --primary-dark: #1e40af;
+    --primary-hover: #1d4ed8;
     --secondary-color: #10b981;
     --danger-color: #ef4444;
     --warning-color: #f59e0b;
@@ -21,8 +22,8 @@
     --bg-primary: #ffffff;
     --bg-secondary: #f8fafc;
     --bg-tertiary: #f1f5f9;
-    --sidebar-bg: #1e293b;
-    --sidebar-text: #e2e8f0;
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #111827;
     
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -62,8 +63,8 @@ body.dark-mode {
     --bg-primary: #111827;
     --bg-secondary: #1f2937;
     --bg-tertiary: #374151;
-    --sidebar-bg: #0f172a;
-    --sidebar-text: #e2e8f0;
+    --sidebar-bg: #111827;
+    --sidebar-text: #f9fafb;
     
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);

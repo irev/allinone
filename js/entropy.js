@@ -5,8 +5,8 @@
 
 export function render(container) {
     container.innerHTML = `
-        <div class="tool-container">
-            <h2>Password Strength & Entropy Calculator</h2>
+        <div class="tool-header">
+            <h1 class="tool-title">Password Strength & Entropy Calculator</h1>
             <p class="tool-description">
                 Analyze password strength, calculate entropy, detect common patterns, 
                 and get suggestions for improvement.
@@ -124,7 +124,6 @@ export function render(container) {
                     <button id="analyzeGenBtn" class="btn btn-sm">Analyze</button>
                 </div>
             </div>
-        </div>
 
         <style>
             .strength-meter {
