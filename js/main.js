@@ -9,14 +9,29 @@
 
 // State management
 let currentTool = 'base64';
-const toolContainer = document.getElementById('toolContainer');
-const navLinks = document.querySelectorAll('.nav-link');
+let toolContainer = null;
+let navLinks = null;
+let pageTitle = null;
+let sidebar = null;
+let mainWrapper = null;
+
+// Tool titles mapping
+const toolTitles = {
+    'base64': 'Base64 Encoder/Decoder',
+    'url': 'URL Encoder/Decoder',
+    'hash': 'Hash Generator',
+    'converter': 'Text Converter',
+    'htmlentities': 'HTML Entities Encoder/Decoder',
+    'jwt': 'JWT Inspector'
+};
 
 /**
  * Fungsi untuk memuat tool secara dinamis
  * @param {string} toolName - Nama tool yang akan dimuat
  */
 async function loadTool(toolName) {
+    if (!toolContainer) return;
+    
     try {
         // Tampilkan loading
         toolContainer.innerHTML = `
@@ -26,14 +41,14 @@ async function loadTool(toolName) {
         `;
 
         // Import modul secara dinamis
-        const module = await import(`./js/${toolName}.js`);
+        const module = await import(`./${toolName}.js`);
         
         // Bersihkan container
         toolContainer.innerHTML = '';
         
         // Render tool menggunakan fungsi render() dari modul
         if (typeof module.render === 'function') {
-            await module.render(toolContainer);
+            module.render(toolContainer);
         } else {
             throw new Error(`Modul ${toolName} tidak memiliki fungsi render()`);
         }
@@ -55,59 +70,97 @@ async function loadTool(toolName) {
  * @param {string} toolName - Nama tool yang aktif
  */
 function updateActiveNav(toolName) {
-    navLinks.forEach(link => {
+    if (!navLinks) return;
+    
+    navLinks.forEach((link) => {
         if (link.dataset.tool === toolName) {
             link.classList.add('active');
         } else {
             link.classList.remove('active');
         }
     });
+    
+    // Update page title
+    if (pageTitle && toolTitles[toolName]) {
+        pageTitle.textContent = toolTitles[toolName];
+    }
 }
 
 /**
- * Event listener untuk navigasi
+ * Toggle sidebar on mobile
  */
-navLinks.forEach(link => {
-    link.addEventListener('click', async (e) => {
-        e.preventDefault();
-        
-        const toolName = link.dataset.tool;
-        
-        // Jangan reload jika sudah di tool yang sama
-        if (toolName === currentTool) {
-            return;
-        }
-        
-        // Update state
-        currentTool = toolName;
-        
-        // Update UI navigasi
-        updateActiveNav(toolName);
-        
-        // Load tool
-        await loadTool(toolName);
-        
-        // Update URL hash tanpa reload page
-        window.location.hash = toolName;
+function toggleSidebar() {
+    if (sidebar && mainWrapper) {
+        sidebar.classList.toggle('show');
+    }
+}
+
+/**
+ * Initialize navigation event listeners
+ */
+function initializeNavigation() {
+    if (!navLinks) return;
+    
+    navLinks.forEach((link) => {
+        link.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const toolName = link.dataset.tool;
+            
+            // Jangan reload jika sudah di tool yang sama
+            if (toolName === currentTool) {
+                return;
+            }
+            
+            // Update state
+            currentTool = toolName;
+            
+            // Update UI navigasi
+            updateActiveNav(toolName);
+            
+            // Load tool
+            await loadTool(toolName);
+            
+            // Update URL hash tanpa reload page
+            window.location.hash = toolName;
+            
+            // Close sidebar on mobile after selection
+            if (window.innerWidth <= 768 && sidebar) {
+                sidebar.classList.remove('show');
+            }
+        });
     });
-});
+    
+    // Setup sidebar toggle button
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    if (btnToggleSidebar) {
+        btnToggleSidebar.addEventListener('click', toggleSidebar);
+    }
+}
 
 /**
  * Handle browser back/forward button
  */
-window.addEventListener('hashchange', async () => {
+function handleHashChange() {
     const hash = window.location.hash.slice(1);
     if (hash && hash !== currentTool) {
         currentTool = hash;
         updateActiveNav(hash);
-        await loadTool(hash);
+        loadTool(hash);
     }
-});
+}
 
 /**
  * Inisialisasi aplikasi saat DOM ready
  */
-document.addEventListener('DOMContentLoaded', async () => {
+function initializeApp() {
+    // Initialize DOM references
+    toolContainer = document.getElementById('toolContainer');
+    navLinks = document.querySelectorAll('.nav-link');
+    pageTitle = document.getElementById('pageTitle');
+    sidebar = document.querySelector('.sidebar');
+    mainWrapper = document.querySelector('.main-wrapper');
+    
     // Cek apakah ada hash di URL
     const hash = window.location.hash.slice(1);
     
@@ -116,15 +169,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateActiveNav(hash);
     }
     
+    // Setup navigation
+    initializeNavigation();
+    
+    // Setup hash change listener
+    window.addEventListener('hashchange', handleHashChange);
+    
     // Load tool pertama kali
-    await loadTool(currentTool);
-});
+    loadTool(currentTool);
+    
+    // Close sidebar when clicking outside on mobile
+    if (window.innerWidth <= 768) {
+        document.addEventListener('click', (e) => {
+            if (sidebar && !sidebar.contains(e.target) && !e.target.closest('.btn-icon')) {
+                sidebar.classList.remove('show');
+            }
+        });
+    }
+}
+
+/**
+ * Main render function untuk konsistensi dengan modul lain
+ * @param {HTMLElement} container - Container element (tidak digunakan di main)
+ */
+export function render(container) {
+    // Main.js tidak memerlukan render ke container
+    // Fungsi ini ada untuk konsistensi struktur modul
+    console.log('Main module loaded');
+}
 
 /**
  * Utility functions yang bisa digunakan oleh semua modul
  */
-
-// Export utility functions untuk digunakan oleh modul lain
 export const utils = {
     /**
      * Salin teks ke clipboard
@@ -172,3 +248,10 @@ export const utils = {
         return text && text.trim().length > 0;
     }
 };
+
+// Initialize app when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    initializeApp();
+}

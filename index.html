@@ -7,48 +7,76 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <h1>🔒 Web Security Tools</h1>
-            <p class="tagline">Koleksi Alat Bantu Keamanan Web & Konversi Data</p>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h1 class="sidebar-title">🔒 Security Tools</h1>
+            <p class="sidebar-subtitle">Web Security & Data Tools</p>
         </div>
-    </header>
-
-    <!-- Navigation -->
-    <nav class="nav-container">
-        <div class="container">
+        
+        <nav class="sidebar-nav">
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#" data-tool="base64" class="nav-link active">Base64</a></li>
-                <li><a href="#" data-tool="url" class="nav-link">URL Encode</a></li>
-                <li><a href="#" data-tool="hash" class="nav-link">Hash Generator</a></li>
-                <li><a href="#" data-tool="converter" class="nav-link">Text Converter</a></li>
-                <li><a href="#" data-tool="htmlentities" class="nav-link">HTML Entities</a></li>
-                <li><a href="#" data-tool="jwt" class="nav-link">JWT Inspector</a></li>
+                <li><a href="#" data-tool="base64" class="nav-link active">
+                    <span class="nav-icon">🔤</span>
+                    <span class="nav-text">Base64</span>
+                </a></li>
+                <li><a href="#" data-tool="url" class="nav-link">
+                    <span class="nav-icon">🔗</span>
+                    <span class="nav-text">URL Encode</span>
+                </a></li>
+                <li><a href="#" data-tool="hash" class="nav-link">
+                    <span class="nav-icon">🔐</span>
+                    <span class="nav-text">Hash Generator</span>
+                </a></li>
+                <li><a href="#" data-tool="converter" class="nav-link">
+                    <span class="nav-icon">🔄</span>
+                    <span class="nav-text">Text Converter</span>
+                </a></li>
+                <li><a href="#" data-tool="htmlentities" class="nav-link">
+                    <span class="nav-icon">🏷️</span>
+                    <span class="nav-text">HTML Entities</span>
+                </a></li>
+                <li><a href="#" data-tool="jwt" class="nav-link">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-text">JWT Inspector</span>
+                </a></li>
             </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <p class="sidebar-note">🔐 100% Client-Side</p>
+            <p class="sidebar-copyright">&copy; 2025</p>
         </div>
-    </nav>
+    </aside>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Tool Container - Konten akan dimuat secara dinamis -->
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <div class="top-bar-content">
+                <h2 class="page-title" id="pageTitle">Base64 Encoder/Decoder</h2>
+                <div class="top-bar-actions">
+                    <button class="btn-icon" id="btnToggleSidebar" title="Toggle Sidebar">
+                        ☰
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tool Container - Konten akan dimuat secara dinamis -->
+        <div class="content-area">
             <div id="toolContainer" class="tool-container">
                 <div class="loading">
                     <p>⏳ Memuat alat...</p>
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>🔐 Semua operasi dilakukan 100% di browser Anda (client-side).</p>
-            <p>Data Anda <strong>TIDAK</strong> dikirim ke server manapun.</p>
-            <p class="copyright">&copy; 2025 Web Security Tools | Open Source Project</p>
-        </div>
-    </footer>
+        <!-- Footer -->
+        <footer class="content-footer">
+            <p>🔐 Semua operasi dilakukan 100% di browser Anda (client-side). Data Anda <strong>TIDAK</strong> dikirim ke server manapun.</p>
+        </footer>
+    </main>
 
     <!-- Script Utama -->
     <script type="module" src="js/main.js"></script>
