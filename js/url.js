@@ -60,6 +60,9 @@ export function render(container) {
                 <button id="btnCopyEncoded" class="btn btn-outline">
                     📋 Salin Hasil
                 </button>
+                <button id="btnExampleEncode" class="btn btn-outline">
+                    💡 Contoh
+                </button>
                 <button id="btnClearEncode" class="btn btn-danger">
                     🗑️ Bersihkan
                 </button>
@@ -101,6 +104,9 @@ export function render(container) {
                 </button>
                 <button id="btnCopyDecoded" class="btn btn-outline">
                     📋 Salin Hasil
+                </button>
+                <button id="btnExampleDecode" class="btn btn-outline">
+                    💡 Contoh
                 </button>
                 <button id="btnClearDecode" class="btn btn-danger">
                     🗑️ Bersihkan
@@ -151,6 +157,8 @@ function initializeEventListeners(container) {
     const btnCopyDecoded = container.querySelector('#btnCopyDecoded');
     const btnClearEncode = container.querySelector('#btnClearEncode');
     const btnClearDecode = container.querySelector('#btnClearDecode');
+    const btnExampleEncode = container.querySelector('#btnExampleEncode');
+    const btnExampleDecode = container.querySelector('#btnExampleDecode');
 
     // Event: Encode
     btnEncode.addEventListener('click', () => {
@@ -184,11 +192,26 @@ function initializeEventListeners(container) {
 
         try {
             const type = decodeType.value;
-            const decoded = type === 'component'
-                ? decodeURIComponent(text)
-                : decodeURI(text);
+            let decoded;
+            
+            // Try to decode with selected method
+            if (type === 'component') {
+                decoded = decodeURIComponent(text);
+            } else {
+                decoded = decodeURI(text);
+            }
             
             decodeOutput.textContent = decoded;
+            
+            // Show hint if decode looks wrong
+            if (text === decoded) {
+                decodeOutput.innerHTML = `
+                    <div>${decoded}</div>
+                    <div style="color: var(--warning-color); margin-top: 1rem; font-size: 0.9rem;">
+                        ℹ️ Output sama dengan input. Pastikan input sudah di-encode, atau coba ganti tipe decoding.
+                    </div>
+                `;
+            }
         } catch (error) {
             decodeOutput.innerHTML = `<span style="color: var(--danger-color);">❌ Error: Input bukan URL encoded yang valid. ${error.message}</span>`;
         }
@@ -230,6 +253,22 @@ function initializeEventListeners(container) {
     btnClearDecode.addEventListener('click', () => {
         decodeInput.value = '';
         decodeOutput.textContent = '';
+    });
+
+    // Event: Example Encode
+    btnExampleEncode.addEventListener('click', () => {
+        encodeInput.value = 'https://example.com/search?q=hello world&lang=id';
+        encodeType.value = 'component';
+        encodeOutput.textContent = '';
+    });
+
+    // Event: Example Decode
+    btnExampleDecode.addEventListener('click', () => {
+        decodeInput.value = 'https%3A%2F%2Fexample.com%2Fsearch%3Fq%3Dhello%20world%26lang%3Did';
+        decodeType.value = 'component';
+        // Auto decode untuk demo
+        const decoded = decodeURIComponent(decodeInput.value);
+        decodeOutput.textContent = decoded;
     });
 }
 
