@@ -10,10 +10,22 @@ export function render(container) {
         document.getElementById('findTime')?.addEventListener('change', generateFindCommand);
         document.getElementById('findSize')?.addEventListener('change', generateFindCommand);
         document.getElementById('findPerm')?.addEventListener('change', generateFindCommand);
+        
+        // Button listeners
+        document.getElementById('btnGenerateFind')?.addEventListener('click', generateFindCommand);
+        document.getElementById('btnClearFind')?.addEventListener('click', clearFindForm);
+        document.getElementById('btnCopyFind')?.addEventListener('click', () => copyToClipboard('findOutput'));
+        document.getElementById('btnExportFind')?.addEventListener('click', exportFindCommand);
+        
+        // Auto-generate with default values
+        generateFindCommand();
     }, 100);
 }
 
 function initFindGenerator() {
+    // Auto-generate on first load
+    setTimeout(() => generateFindCommand(), 150);
+    
     return `
         <div class="tool-header">
             <h2>🔍 Find Command Generator</h2>
@@ -75,18 +87,21 @@ function initFindGenerator() {
             </div>
 
             <div class="button-group">
-                <button class="btn-primary" onclick="generateFindCommand()">
+                <button class="btn-primary" id="btnGenerateFind">
                     🔧 Generate Command
                 </button>
-                <button class="btn-secondary" onclick="clearFindForm()">
+                <button class="btn-secondary" id="btnClearFind">
                     🔄 Clear
+                </button>
+                <button class="btn-secondary" id="btnExportFind">
+                    💾 Export
                 </button>
             </div>
 
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="findOutput" class="form-control" readonly rows="4"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('findOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyFind">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -147,4 +162,34 @@ function clearFindForm() {
     document.getElementById('findPerm').value = '';
     document.getElementById('findOutput').value = '';
     document.getElementById('findExplanation').textContent = '';
+    generateFindCommand();
+}
+
+function exportFindCommand() {
+    const command = document.getElementById('findOutput').value;
+    if (!command) return;
+    
+    const blob = new Blob([command], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'find-command.sh';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.select();
+        document.execCommand('copy');
+        
+        // Visual feedback
+        const btn = event.target.closest('button');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
+    }
 }

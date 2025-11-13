@@ -1,6 +1,28 @@
 // Grep Command Builder Tool
 export function render(container) {
     container.innerHTML = initGrepBuilder();
+    
+    setTimeout(() => {
+        // Input listeners
+        document.getElementById('grepPattern')?.addEventListener('input', generateGrepCommand);
+        document.getElementById('grepTarget')?.addEventListener('input', generateGrepCommand);
+        document.getElementById('grepType')?.addEventListener('change', generateGrepCommand);
+        document.getElementById('grepContext')?.addEventListener('change', generateGrepCommand);
+        
+        // Checkbox listeners
+        document.getElementById('grepIgnoreCase')?.addEventListener('change', generateGrepCommand);
+        document.getElementById('grepRecursive')?.addEventListener('change', generateGrepCommand);
+        document.getElementById('grepLineNumber')?.addEventListener('change', generateGrepCommand);
+        document.getElementById('grepCount')?.addEventListener('change', generateGrepCommand);
+        document.getElementById('grepInvert')?.addEventListener('change', generateGrepCommand);
+        document.getElementById('grepColor')?.addEventListener('change', generateGrepCommand);
+        
+        // Button listeners
+        document.getElementById('btnGenerateGrep')?.addEventListener('click', generateGrepCommand);
+        document.getElementById('btnClearGrep')?.addEventListener('click', clearGrepForm);
+        document.getElementById('btnCopyGrep')?.addEventListener('click', () => copyToClipboard('grepOutput'));
+        document.getElementById('btnExportGrep')?.addEventListener('click', exportGrepCommand);
+    }, 100);
 }
 
 function initGrepBuilder() {
@@ -68,18 +90,21 @@ function initGrepBuilder() {
             </div>
 
             <div class="button-group">
-                <button class="btn-primary" onclick="generateGrepCommand()">
+                <button class="btn-primary" id="btnGenerateGrep">
                     🔧 Generate Command
                 </button>
-                <button class="btn-secondary" onclick="clearGrepForm()">
+                <button class="btn-secondary" id="btnClearGrep">
                     🔄 Clear
+                </button>
+                <button class="btn-secondary" id="btnExportGrep">
+                    💾 Export
                 </button>
             </div>
 
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="grepOutput" class="form-control" readonly rows="4"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('grepOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyGrep">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -140,4 +165,32 @@ function clearGrepForm() {
     document.getElementById('grepColor').checked = true;
     document.getElementById('grepContext').value = '';
     document.getElementById('grepOutput').value = '';
+}
+
+function exportGrepCommand() {
+    const command = document.getElementById('grepOutput').value;
+    if (!command || command.includes('Error')) return;
+    
+    const blob = new Blob([command], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'grep-command.sh';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.select();
+        document.execCommand('copy');
+        
+        const btn = event.target.closest('button');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
+    }
 }

@@ -4,7 +4,18 @@ export function render(container) {
     
     // Initialize after render
     setTimeout(() => {
+        // Add event listeners
+        document.getElementById('serviceName')?.addEventListener('input', updateServiceCommand);
+        document.getElementById('serviceAction')?.addEventListener('change', updateServiceCommand);
+        document.getElementById('serviceSudo')?.addEventListener('change', updateServiceCommand);
+        document.getElementById('logType')?.addEventListener('change', updateLogCommand);
+        
+        // Initial update
         updateServiceCommand();
+        
+        // Copy buttons
+        document.getElementById('btnCopyService')?.addEventListener('click', () => copyToClipboard('serviceOutput'));
+        document.getElementById('btnCopyLog')?.addEventListener('click', () => copyToClipboard('logOutput'));
         
         // Attach quick service buttons
         const quickBtns = container.querySelectorAll('.btn-secondary.btn-sm');
@@ -34,13 +45,13 @@ function initServiceControl() {
         <div class="tool-content">
             <div class="input-group">
                 <label>Service Name</label>
-                <input type="text" id="serviceName" class="form-control" placeholder="nginx" oninput="updateServiceCommand()">
+                <input type="text" id="serviceName" class="form-control" placeholder="nginx">
                 <span class="hint">Example: nginx, apache2, mysql, ssh</span>
             </div>
 
             <div class="input-group">
                 <label>Action</label>
-                <select id="serviceAction" class="form-control" onchange="updateServiceCommand()">
+                <select id="serviceAction" class="form-control">
                     <option value="status">status (check status)</option>
                     <option value="start">start (start service)</option>
                     <option value="stop">stop (stop service)</option>
@@ -57,7 +68,7 @@ function initServiceControl() {
                 <label>Use sudo</label>
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="serviceSudo" checked onchange="updateServiceCommand()"> Prefix with sudo
+                        <input type="checkbox" id="serviceSudo" checked> Prefix with sudo
                     </label>
                 </div>
             </div>
@@ -65,12 +76,12 @@ function initServiceControl() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="serviceOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('serviceOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyService">📋 Copy</button>
             </div>
 
             <div class="input-group">
                 <label>Log Viewer Commands</label>
-                <select id="logType" class="form-control" onchange="updateLogCommand()">
+                <select id="logType" class="form-control">
                     <option value="">-- Select Log Type --</option>
                     <option value="unit">View service logs</option>
                     <option value="follow">Follow logs (live)</option>
@@ -83,7 +94,7 @@ function initServiceControl() {
             <div class="input-group">
                 <label>Log Command</label>
                 <textarea id="logOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('logOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyLog">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -166,9 +177,17 @@ function setQuickService(cmd) {
     document.getElementById('serviceOutput').value = cmd;
 }
 
-// Initialize
-setTimeout(() => {
-    if (document.getElementById('serviceName')) {
-        updateServiceCommand();
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.select();
+        document.execCommand('copy');
+        
+        const btn = event?.target?.closest('button');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
     }
-}, 100);
+}

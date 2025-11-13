@@ -4,7 +4,24 @@ export function render(container) {
     
     // Initialize after render
     setTimeout(() => {
+        // Add event listeners for all inputs
+        document.getElementById('diskAnalysisType')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('dfHuman')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('dfTotal')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('dfType')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('duPath')?.addEventListener('input', updateDiskCommand);
+        document.getElementById('duHuman')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('duSummary')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('duDepth')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('duSort')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('lsblkFS')?.addEventListener('change', updateDiskCommand);
+        document.getElementById('lsblkAll')?.addEventListener('change', updateDiskCommand);
+        
+        // Initial update
         updateDiskCommand();
+        
+        // Copy button
+        document.getElementById('btnCopyDisk')?.addEventListener('click', () => copyToClipboard('diskOutput'));
         
         // Attach quick command buttons
         const quickBtns = container.querySelectorAll('.btn-secondary.btn-sm');
@@ -32,7 +49,7 @@ function initDiskAnalyzer() {
         <div class="tool-content">
             <div class="input-group">
                 <label>Analysis Type</label>
-                <select id="diskAnalysisType" class="form-control" onchange="updateDiskCommand()">
+                <select id="diskAnalysisType" class="form-control">
                     <option value="df">Disk Free (df)</option>
                     <option value="du">Disk Usage (du)</option>
                     <option value="lsblk">Block Devices (lsblk)</option>
@@ -46,13 +63,13 @@ function initDiskAnalyzer() {
                     <label>Display Format</label>
                     <div class="checkbox-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="dfHuman" checked onchange="updateDiskCommand()"> -h (human readable)
+                            <input type="checkbox" id="dfHuman" checked> -h (human readable)
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" id="dfTotal" onchange="updateDiskCommand()"> --total (show total)
+                            <input type="checkbox" id="dfTotal"> --total (show total)
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" id="dfType" onchange="updateDiskCommand()"> -T (show filesystem type)
+                            <input type="checkbox" id="dfType"> -T (show filesystem type)
                         </label>
                     </div>
                 </div>
@@ -61,22 +78,22 @@ function initDiskAnalyzer() {
             <div id="duOptions" class="analysis-options" style="display:none;">
                 <div class="input-group">
                     <label>Target Path</label>
-                    <input type="text" id="duPath" class="form-control" value="/var/log" onchange="updateDiskCommand()">
+                    <input type="text" id="duPath" class="form-control" value="/var/log">
                 </div>
                 <div class="input-group">
                     <label>Options</label>
                     <div class="checkbox-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="duHuman" checked onchange="updateDiskCommand()"> -h (human readable)
+                            <input type="checkbox" id="duHuman" checked> -h (human readable)
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" id="duSummary" onchange="updateDiskCommand()"> -s (summary only)
+                            <input type="checkbox" id="duSummary"> -s (summary only)
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" id="duDepth" onchange="updateDiskCommand()"> --max-depth=1
+                            <input type="checkbox" id="duDepth"> --max-depth=1
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" id="duSort" onchange="updateDiskCommand()"> | sort -hr
+                            <input type="checkbox" id="duSort"> | sort -hr
                         </label>
                     </div>
                 </div>
@@ -87,10 +104,10 @@ function initDiskAnalyzer() {
                     <label>Display Options</label>
                     <div class="checkbox-group">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="lsblkFS" checked onchange="updateDiskCommand()"> -f (filesystem info)
+                            <input type="checkbox" id="lsblkFS" checked> -f (filesystem info)
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" id="lsblkAll" onchange="updateDiskCommand()"> -a (all devices)
+                            <input type="checkbox" id="lsblkAll"> -a (all devices)
                         </label>
                     </div>
                 </div>
@@ -99,7 +116,7 @@ function initDiskAnalyzer() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="diskOutput" class="form-control" readonly rows="3"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('diskOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyDisk">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -182,9 +199,17 @@ function setQuickDiskCommand(cmd) {
     document.getElementById('diskExplanation').textContent = explanation;
 }
 
-// Initialize on load
-setTimeout(() => {
-    if (document.getElementById('diskAnalysisType')) {
-        updateDiskCommand();
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.select();
+        document.execCommand('copy');
+        
+        const btn = event?.target?.closest('button');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
     }
-}, 100);
+}

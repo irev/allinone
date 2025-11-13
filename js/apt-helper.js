@@ -4,6 +4,24 @@ export function render(container) {
     
     // Initialize after render
     setTimeout(() => {
+        // Input listeners for auto-update
+        document.getElementById('pkgManager')?.addEventListener('change', updatePkgCommand);
+        document.getElementById('pkgName')?.addEventListener('input', updatePkgCommand);
+        document.getElementById('pkgAction')?.addEventListener('change', updatePkgCommand);
+        document.getElementById('pkgSudo')?.addEventListener('change', updatePkgCommand);
+        document.getElementById('pkgYes')?.addEventListener('change', updatePkgCommand);
+        
+        // Copy buttons
+        document.getElementById('btnCopyPkg')?.addEventListener('click', () => copyToClipboard('pkgOutput'));
+        document.getElementById('btnCopyPkgSearch')?.addEventListener('click', () => copyToClipboard('pkgSearchOutput'));
+        
+        // Search button
+        document.getElementById('btnSearchPkg')?.addEventListener('click', searchPackage);
+        document.getElementById('pkgSearch')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchPackage();
+        });
+        
+        // Initial generate
         updatePkgCommand();
         
         // Attach quick package buttons
@@ -34,7 +52,7 @@ function initAptHelper() {
         <div class="tool-content">
             <div class="input-group">
                 <label>Package Manager</label>
-                <select id="pkgManager" class="form-control" onchange="updatePkgCommand()">
+                <select id="pkgManager" class="form-control">
                     <option value="apt">apt (Debian/Ubuntu)</option>
                     <option value="dnf">dnf (Fedora/RHEL 8+)</option>
                     <option value="yum">yum (CentOS/RHEL 7)</option>
@@ -45,13 +63,13 @@ function initAptHelper() {
 
             <div class="input-group">
                 <label>Package Name</label>
-                <input type="text" id="pkgName" class="form-control" placeholder="nginx" oninput="updatePkgCommand()">
+                <input type="text" id="pkgName" class="form-control" placeholder="nginx">
                 <span class="hint">Leave empty for system-wide operations</span>
             </div>
 
             <div class="input-group">
                 <label>Action</label>
-                <select id="pkgAction" class="form-control" onchange="updatePkgCommand()">
+                <select id="pkgAction" class="form-control">
                     <option value="install">Install package</option>
                     <option value="remove">Remove package</option>
                     <option value="purge">Purge (remove + config)</option>
@@ -69,10 +87,10 @@ function initAptHelper() {
                 <label>Options</label>
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="pkgSudo" checked onchange="updatePkgCommand()"> Use sudo
+                        <input type="checkbox" id="pkgSudo" checked> Use sudo
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" id="pkgYes" checked onchange="updatePkgCommand()"> Auto-confirm (-y)
+                        <input type="checkbox" id="pkgYes" checked> Auto-confirm (-y)
                     </label>
                 </div>
             </div>
@@ -80,7 +98,7 @@ function initAptHelper() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="pkgOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('pkgOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyPkg">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -111,14 +129,14 @@ function initAptHelper() {
                 <label>Package Info Lookup</label>
                 <div style="display: flex; gap: 0.5rem;">
                     <input type="text" id="pkgSearch" class="form-control" placeholder="Search package...">
-                    <button class="btn-primary" onclick="searchPackage()">🔍 Search</button>
+                    <button class="btn-primary" id="btnSearchPkg">🔍 Search</button>
                 </div>
             </div>
 
             <div class="input-group">
                 <label>Search Command</label>
                 <textarea id="pkgSearchOutput" class="form-control" readonly rows="2"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('pkgSearchOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyPkgSearch">📋 Copy</button>
             </div>
         </div>
     `;
@@ -240,8 +258,17 @@ function setQuickPkg(cmd) {
     document.getElementById('pkgOutput').value = cmd;
 }
 
-setTimeout(() => {
-    if (document.getElementById('pkgManager')) {
-        updatePkgCommand();
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.select();
+        document.execCommand('copy');
+        
+        const btn = event?.target?.closest('button');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
     }
-}, 100);
+}

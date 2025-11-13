@@ -4,7 +4,26 @@ export function render(container) {
     
     // Initialize after render
     setTimeout(() => {
+        // Add event listeners
+        document.getElementById('netTarget')?.addEventListener('input', updateNetCommand);
+        document.getElementById('netTool')?.addEventListener('change', updateNetCommand);
+        document.getElementById('pingCount')?.addEventListener('input', updateNetCommand);
+        document.getElementById('pingFlood')?.addEventListener('change', updateNetCommand);
+        document.getElementById('digType')?.addEventListener('change', updateNetCommand);
+        document.getElementById('curlHeaders')?.addEventListener('change', updateNetCommand);
+        document.getElementById('curlVerbose')?.addEventListener('change', updateNetCommand);
+        document.getElementById('curlTime')?.addEventListener('change', updateNetCommand);
+        document.getElementById('ssPort')?.addEventListener('input', updateNetCommand);
+        document.getElementById('ssTCP')?.addEventListener('change', updateNetCommand);
+        document.getElementById('ssUDP')?.addEventListener('change', updateNetCommand);
+        document.getElementById('ssListen')?.addEventListener('change', updateNetCommand);
+        document.getElementById('ssProcesses')?.addEventListener('change', updateNetCommand);
+        
+        // Initial update
         updateNetCommand();
+        
+        // Copy button
+        document.getElementById('btnCopyNet')?.addEventListener('click', () => copyToClipboard('netOutput'));
         
         // Attach quick network buttons
         const quickBtns = container.querySelectorAll('.btn-secondary.btn-sm');
@@ -34,12 +53,12 @@ function initPingBuilder() {
         <div class="tool-content">
             <div class="input-group">
                 <label>Target Host</label>
-                <input type="text" id="netTarget" class="form-control" placeholder="google.com or 8.8.8.8" oninput="updateNetCommand()">
+                <input type="text" id="netTarget" class="form-control" placeholder="google.com or 8.8.8.8">
             </div>
 
             <div class="input-group">
                 <label>Tool Type</label>
-                <select id="netTool" class="form-control" onchange="updateNetCommand()">
+                <select id="netTool" class="form-control">
                     <option value="ping">ping (connectivity test)</option>
                     <option value="traceroute">traceroute (route path)</option>
                     <option value="mtr">mtr (live traceroute)</option>
@@ -56,11 +75,11 @@ function initPingBuilder() {
             <div id="pingOptions" class="tool-options">
                 <div class="input-group">
                     <label>Ping Count</label>
-                    <input type="number" id="pingCount" class="form-control" value="4" min="1" max="100" onchange="updateNetCommand()">
+                    <input type="number" id="pingCount" class="form-control" value="4" min="1" max="100">
                 </div>
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="pingFlood" onchange="updateNetCommand()"> -f (flood mode - requires sudo)
+                        <input type="checkbox" id="pingFlood"> -f (flood mode - requires sudo)
                     </label>
                 </div>
             </div>
@@ -68,7 +87,7 @@ function initPingBuilder() {
             <div id="digOptions" class="tool-options" style="display:none;">
                 <div class="input-group">
                     <label>Query Type</label>
-                    <select id="digType" class="form-control" onchange="updateNetCommand()">
+                    <select id="digType" class="form-control">
                         <option value="A">A (IPv4 address)</option>
                         <option value="AAAA">AAAA (IPv6 address)</option>
                         <option value="MX">MX (mail servers)</option>
@@ -84,13 +103,13 @@ function initPingBuilder() {
             <div id="curlOptions" class="tool-options" style="display:none;">
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="curlHeaders" checked onchange="updateNetCommand()"> -I (headers only)
+                        <input type="checkbox" id="curlHeaders" checked> -I (headers only)
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" id="curlVerbose" onchange="updateNetCommand()"> -v (verbose)
+                        <input type="checkbox" id="curlVerbose"> -v (verbose)
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" id="curlTime" onchange="updateNetCommand()"> -w (timing info)
+                        <input type="checkbox" id="curlTime"> -w (timing info)
                     </label>
                 </div>
             </div>
@@ -98,20 +117,20 @@ function initPingBuilder() {
             <div id="ssOptions" class="tool-options" style="display:none;">
                 <div class="input-group">
                     <label>Port Filter</label>
-                    <input type="text" id="ssPort" class="form-control" placeholder="80, 443, 3306" onchange="updateNetCommand()">
+                    <input type="text" id="ssPort" class="form-control" placeholder="80, 443, 3306">
                 </div>
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="ssTCP" checked onchange="updateNetCommand()"> -t (TCP)
+                        <input type="checkbox" id="ssTCP" checked> -t (TCP)
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" id="ssUDP" onchange="updateNetCommand()"> -u (UDP)
+                        <input type="checkbox" id="ssUDP"> -u (UDP)
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" id="ssListen" checked onchange="updateNetCommand()"> -l (listening)
+                        <input type="checkbox" id="ssListen" checked> -l (listening)
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" id="ssProcesses" checked onchange="updateNetCommand()"> -p (processes)
+                        <input type="checkbox" id="ssProcesses" checked> -p (processes)
                     </label>
                 </div>
             </div>
@@ -119,7 +138,7 @@ function initPingBuilder() {
             <div class="input-group">
                 <label>Generated Command</label>
                 <textarea id="netOutput" class="form-control" readonly rows="3"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('netOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyNet">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -234,8 +253,17 @@ function setQuickNet(cmd) {
     document.getElementById('netExplanation').textContent = explanation;
 }
 
-setTimeout(() => {
-    if (document.getElementById('netTool')) {
-        updateNetCommand();
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.select();
+        document.execCommand('copy');
+        
+        const btn = event?.target?.closest('button');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
     }
-}, 100);
+}

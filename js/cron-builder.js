@@ -4,7 +4,25 @@ export function render(container) {
     
     // Initialize after render
     setTimeout(() => {
+        // Add event listeners
+        document.getElementById('cronPreset')?.addEventListener('change', loadCronPreset);
+        document.getElementById('cronMinute')?.addEventListener('input', updateCronExpression);
+        document.getElementById('cronHour')?.addEventListener('input', updateCronExpression);
+        document.getElementById('cronDay')?.addEventListener('input', updateCronExpression);
+        document.getElementById('cronMonth')?.addEventListener('input', updateCronExpression);
+        document.getElementById('cronDayWeek')?.addEventListener('input', updateCronExpression);
+        document.getElementById('cronCommand')?.addEventListener('input', updateCronExpression);
+        document.getElementById('cronRedirect')?.addEventListener('change', updateCronExpression);
+        document.getElementById('cronEmail')?.addEventListener('change', updateCronExpression);
+        document.getElementById('cronLogFile')?.addEventListener('input', updateCronExpression);
+        
+        // Initial update
         updateCronExpression();
+        
+        // Copy button
+        document.getElementById('btnCopyCron')?.addEventListener('click', () => copyToClipboard('cronOutput'));
+        
+        // Redirect checkbox
         document.getElementById('cronRedirect')?.addEventListener('change', () => {
             document.getElementById('cronLogPath').style.display = 
                 document.getElementById('cronRedirect').checked ? 'block' : 'none';
@@ -38,7 +56,7 @@ function initCronBuilder() {
         <div class="tool-content">
             <div class="input-group">
                 <label>Preset Schedules</label>
-                <select id="cronPreset" class="form-control" onchange="loadCronPreset()">
+                <select id="cronPreset" class="form-control">
                     <option value="">-- Custom --</option>
                     <option value="* * * * *">Every minute</option>
                     <option value="*/5 * * * *">Every 5 minutes</option>
@@ -58,37 +76,37 @@ function initCronBuilder() {
 
             <div class="input-group">
                 <label>Minute (0-59)</label>
-                <input type="text" id="cronMinute" class="form-control" value="0" oninput="updateCronExpression()">
+                <input type="text" id="cronMinute" class="form-control" value="0">
                 <span class="hint">* = every, */5 = every 5, 0,15,30,45 = specific</span>
             </div>
 
             <div class="input-group">
                 <label>Hour (0-23)</label>
-                <input type="text" id="cronHour" class="form-control" value="*" oninput="updateCronExpression()">
+                <input type="text" id="cronHour" class="form-control" value="*">
                 <span class="hint">0 = midnight, 12 = noon, */2 = every 2 hours</span>
             </div>
 
             <div class="input-group">
                 <label>Day of Month (1-31)</label>
-                <input type="text" id="cronDay" class="form-control" value="*" oninput="updateCronExpression()">
+                <input type="text" id="cronDay" class="form-control" value="*">
                 <span class="hint">* = every day, 1 = first day, 15 = mid-month</span>
             </div>
 
             <div class="input-group">
                 <label>Month (1-12)</label>
-                <input type="text" id="cronMonth" class="form-control" value="*" oninput="updateCronExpression()">
+                <input type="text" id="cronMonth" class="form-control" value="*">
                 <span class="hint">* = every month, 1 = January, 12 = December</span>
             </div>
 
             <div class="input-group">
                 <label>Day of Week (0-7, 0=Sunday)</label>
-                <input type="text" id="cronDayWeek" class="form-control" value="*" oninput="updateCronExpression()">
+                <input type="text" id="cronDayWeek" class="form-control" value="*">
                 <span class="hint">* = every day, 0 = Sunday, 1 = Monday, 5 = Friday</span>
             </div>
 
             <div class="input-group">
                 <label>Command to Execute</label>
-                <input type="text" id="cronCommand" class="form-control" placeholder="/usr/local/bin/backup.sh" oninput="updateCronExpression()">
+                <input type="text" id="cronCommand" class="form-control" placeholder="/usr/local/bin/backup.sh">
                 <span class="hint">Full path to script or command</span>
             </div>
 
@@ -96,23 +114,23 @@ function initCronBuilder() {
                 <label>Additional Options</label>
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" id="cronRedirect" onchange="updateCronExpression()"> Redirect output to log
+                        <input type="checkbox" id="cronRedirect"> Redirect output to log
                     </label>
                     <label class="checkbox-label">
-                        <input type="checkbox" id="cronEmail" onchange="updateCronExpression()"> Send errors via email
+                        <input type="checkbox" id="cronEmail"> Send errors via email
                     </label>
                 </div>
             </div>
 
             <div class="input-group" id="cronLogPath" style="display:none;">
                 <label>Log File Path</label>
-                <input type="text" id="cronLogFile" class="form-control" value="/var/log/cron-job.log" oninput="updateCronExpression()">
+                <input type="text" id="cronLogFile" class="form-control" value="/var/log/cron-job.log">
             </div>
 
             <div class="input-group">
                 <label>Generated Cron Expression</label>
                 <textarea id="cronOutput" class="form-control" readonly rows="3"></textarea>
-                <button class="btn-copy-inline" onclick="copyToClipboard('cronOutput')">📋 Copy</button>
+                <button class="btn-copy-inline" id="btnCopyCron">📋 Copy</button>
             </div>
 
             <div class="input-group">
@@ -263,12 +281,17 @@ function setQuickCron(cmd) {
     document.getElementById('cronQuickOutput').value = cmd;
 }
 
-setTimeout(() => {
-    if (document.getElementById('cronMinute')) {
-        updateCronExpression();
-        document.getElementById('cronRedirect').addEventListener('change', () => {
-            document.getElementById('cronLogPath').style.display = 
-                document.getElementById('cronRedirect').checked ? 'block' : 'none';
-        });
+function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.select();
+        document.execCommand('copy');
+        
+        const btn = event?.target?.closest('button');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '✅ Copied!';
+            setTimeout(() => btn.innerHTML = originalText, 2000);
+        }
     }
-}, 100);
+}
