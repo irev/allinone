@@ -44,13 +44,24 @@ body {
 
 /* Selection styles */
 ::selection {
-    background-color: var(--primary);
-    color: white;
+    background-color: #3b82f6;
+    color: #ffffff;
 }
 
 ::-moz-selection {
-    background-color: var(--primary);
-    color: white;
+    background-color: #3b82f6;
+    color: #ffffff;
+}
+
+/* Dark mode selection - lighter background with dark text */
+body.dark-mode ::selection {
+    background-color: #60a5fa;
+    color: #111827;
+}
+
+body.dark-mode ::-moz-selection {
+    background-color: #60a5fa;
+    color: #111827;
 }
 
 /* Scrollbar styling for webkit browsers */

@@ -3,6 +3,8 @@
  * Side-by-side text comparison with diff highlighting and hash comparison
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
     container.innerHTML = `
         <div class="tool-header">
@@ -268,6 +270,26 @@ export function render(container) {
         hashDetails.style.display = 'none';
         charByCharComparison.style.display = 'none';
     });
+
+    // Add copy/paste buttons to textareas
+    setTimeout(() => {
+        utils.addTextareaActions(text1, {
+            showCopy: true,
+            showPaste: true
+        });
+        utils.addTextareaActions(text2, {
+            showCopy: true,
+            showPaste: true
+        });
+        utils.addTextareaActions(hash1, {
+            showCopy: true,
+            showPaste: true
+        });
+        utils.addTextareaActions(hash2, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 
     // Text diff implementation
     function performTextDiff(t1, t2) {

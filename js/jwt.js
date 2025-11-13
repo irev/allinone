@@ -10,6 +10,8 @@
  * PENTING: Tool ini hanya untuk inspeksi, BUKAN untuk validasi keamanan!
  */
 
+import { utils } from './main.js';
+
 /**
  * Fungsi utama untuk render UI JWT Inspector
  * @param {HTMLElement} container - Container element untuk render
@@ -208,6 +210,14 @@ function initializeEventListeners(container) {
             }
         }
     });
+
+    // Add copy/paste buttons to textarea
+    setTimeout(() => {
+        utils.addTextareaActions(jwtInput, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 }
 
 /**

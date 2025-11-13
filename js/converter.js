@@ -9,6 +9,8 @@
  * Semua operasi dilakukan client-side menggunakan native JavaScript
  */
 
+import { utils } from './main.js';
+
 /**
  * Fungsi utama untuk render UI Text Converter
  * @param {HTMLElement} container - Container element untuk render
@@ -27,7 +29,7 @@ export function render(container) {
         <div class="tool-section">
             <h3 class="section-title">🎯 Pilih Jenis Konversi</h3>
             <div class="form-group">
-                <select id="conversionType" class="form-select">
+                <select id="conversionType" class="form-control">
                     <option value="text-hex">Text → Hexadecimal</option>
                     <option value="hex-text">Hexadecimal → Text</option>
                     <option value="text-binary">Text → Binary</option>
@@ -246,6 +248,14 @@ function initializeEventListeners(container) {
 
     // Initialize labels
     updateLabels();
+
+    // Add copy/paste buttons to textarea
+    setTimeout(() => {
+        utils.addTextareaActions(converterInput, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 }
 
 // ========== Conversion Functions ==========

@@ -9,6 +9,8 @@
  * Berguna untuk sanitasi HTML, mencegah XSS, dan menampilkan kode HTML
  */
 
+import { utils } from './main.js';
+
 /**
  * Fungsi utama untuk render UI HTML Entities
  * @param {HTMLElement} container - Container element untuk render
@@ -44,7 +46,7 @@ export function render(container) {
 
             <div class="form-group">
                 <label class="form-label">Tipe Encoding:</label>
-                <select id="encodeType" class="form-select">
+                <select id="encodeType" class="form-control">
                     <option value="all">All Characters (Maksimal keamanan)</option>
                     <option value="basic" selected>Basic HTML Characters</option>
                     <option value="numeric">Numeric Entities Only</option>
@@ -225,6 +227,18 @@ function initializeEventListeners(container) {
         decodeInput.value = '';
         decodeOutput.textContent = '';
     });
+
+    // Add copy/paste buttons to textareas
+    setTimeout(() => {
+        utils.addTextareaActions(encodeInput, {
+            showCopy: true,
+            showPaste: true
+        });
+        utils.addTextareaActions(decodeInput, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 }
 
 // ========== HTML Entities Map ==========

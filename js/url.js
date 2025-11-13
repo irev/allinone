@@ -9,6 +9,8 @@
  * Semua operasi dilakukan client-side menggunakan native JavaScript API
  */
 
+import { utils } from './main.js';
+
 /**
  * Fungsi utama untuk render UI URL tool
  * @param {HTMLElement} container - Container element untuk render
@@ -47,7 +49,7 @@ export function render(container) {
 
             <div class="form-group">
                 <label class="form-label">Tipe Encoding:</label>
-                <select id="encodeType" class="form-select">
+                <select id="encodeType" class="form-control">
                     <option value="component">URL Component (Recommended - untuk parameter)</option>
                     <option value="full">Full URL</option>
                 </select>
@@ -92,7 +94,7 @@ export function render(container) {
 
             <div class="form-group">
                 <label class="form-label">Tipe Decoding:</label>
-                <select id="decodeType" class="form-select">
+                <select id="decodeType" class="form-control">
                     <option value="component">URL Component</option>
                     <option value="full">Full URL</option>
                 </select>
@@ -270,6 +272,18 @@ function initializeEventListeners(container) {
         const decoded = decodeURIComponent(decodeInput.value);
         decodeOutput.textContent = decoded;
     });
+
+    // Add copy/paste buttons to textareas
+    setTimeout(() => {
+        utils.addTextareaActions(encodeInput, {
+            showCopy: true,
+            showPaste: true
+        });
+        utils.addTextareaActions(decodeInput, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 }
 
 /**

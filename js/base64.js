@@ -8,6 +8,8 @@
  * Semua operasi dilakukan client-side menggunakan native JavaScript API
  */
 
+import { utils } from './main.js';
+
 /**
  * Fungsi utama untuk render UI Base64 tool
  * @param {HTMLElement} container - Container element untuk render
@@ -192,6 +194,19 @@ function initializeEventListeners(container) {
         decodeInput.value = '';
         decodeOutput.textContent = '';
     });
+
+    // Add copy/paste actions to textareas
+    setTimeout(() => {
+        utils.addTextareaActions(encodeInput, {
+            showCopy: true,
+            showPaste: true
+        });
+
+        utils.addTextareaActions(decodeInput, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 }
 
 /**

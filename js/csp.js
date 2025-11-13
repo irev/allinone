@@ -3,6 +3,8 @@
  * Parse and visualize CSP directives with security warnings
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
   container.innerHTML = `
     <div class="tool-section">
@@ -415,4 +417,12 @@ export function render(container) {
       analyzeCSP();
     }
   });
+
+  // Add copy/paste buttons to textarea
+  setTimeout(() => {
+    utils.addTextareaActions(cspInput, {
+      showCopy: true,
+      showPaste: true
+    });
+  }, 100);
 }

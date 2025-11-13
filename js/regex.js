@@ -3,6 +3,8 @@
  * Test regular expressions with matches highlighting and capture groups
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
   container.innerHTML = `
     <div class="tool-section">
@@ -453,4 +455,12 @@ Invalid: 12-345-6789, 123-45-67890`;
       testRegex();
     }
   });
+
+  // Add copy/paste buttons to textarea
+  setTimeout(() => {
+    utils.addTextareaActions(testString, {
+      showCopy: true,
+      showPaste: true
+    });
+  }, 100);
 }

@@ -3,6 +3,8 @@
  * Parse Set-Cookie headers and build cookie strings
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
   container.innerHTML = `
     <div class="tool-section">
@@ -505,4 +507,12 @@ Set-Cookie: preferences=dark_mode; Path=/; Expires=Wed, 13 Nov 2026 12:00:00 GMT
       parseCookie();
     }
   });
+
+  // Add copy/paste buttons to textarea
+  setTimeout(() => {
+    utils.addTextareaActions(cookieHeader, {
+      showCopy: true,
+      showPaste: true
+    });
+  }, 100);
 }

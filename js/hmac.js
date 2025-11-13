@@ -3,6 +3,8 @@
  * Generate HMAC signatures using SHA-256 and SHA-1 algorithms
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
   container.innerHTML = `
     <div class="tool-section">
@@ -269,4 +271,16 @@ export function render(container) {
       generateHMAC();
     }
   });
+
+  // Add copy/paste buttons to textareas
+  setTimeout(() => {
+    utils.addTextareaActions(messageInput, {
+      showCopy: true,
+      showPaste: true
+    });
+    utils.addTextareaActions(secretInput, {
+      showCopy: true,
+      showPaste: true
+    });
+  }, 100);
 }

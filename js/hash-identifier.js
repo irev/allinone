@@ -3,6 +3,8 @@
  * Identify hash type from hash string
  */
 
+import { utils } from './main.js';
+
 function initHashIdentifier() {
     return `
         <div class="tool-header">
@@ -467,5 +469,21 @@ export function render(container) {
                 }
             }, 500);
         });
+
+        // Add copy/paste buttons to textareas
+        const hashInput = document.getElementById('hashInput');
+        const bulkHashInput = document.getElementById('bulkHashInput');
+        if (hashInput) {
+            utils.addTextareaActions(hashInput, {
+                showCopy: true,
+                showPaste: true
+            });
+        }
+        if (bulkHashInput) {
+            utils.addTextareaActions(bulkHashInput, {
+                showCopy: true,
+                showPaste: true
+            });
+        }
     }, 100);
 }

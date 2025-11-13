@@ -44,6 +44,12 @@ const toolTitles = {
     'hash-identifier': 'Hash Identifier',
     'lorem': 'Lorem Ipsum & Random Data Generator',
     'qr-generator': 'QR Code Generator',
+    'snippet-vault': 'Snippet Vault',
+    'template-manager': 'Template Manager',
+    'metadata-stripper': 'Metadata Stripper',
+    'regex-explainer': 'Regex Explainer & Tester',
+    'shell-explainer': 'Shell Command Explainer',
+    'log-analyzer': 'Access Log Analyzer',
     // Linux Tools
     'find-generator': 'Find Command Generator',
     'grep-builder': 'Grep Command Builder',
@@ -377,6 +383,149 @@ export const utils = {
      */
     isNotEmpty(text) {
         return text && text.trim().length > 0;
+    },
+
+    /**
+     * Add copy/paste buttons to textarea
+     * @param {HTMLTextAreaElement} textarea - The textarea element
+     * @param {Object} options - Configuration options
+     */
+    addTextareaActions(textarea, options = {}) {
+        if (!textarea || textarea.dataset.actionsAdded) return;
+        
+        const {
+            showCopy = true,
+            showPaste = true,
+            onCopy = null,
+            onPaste = null
+        } = options;
+
+        // Mark as processed
+        textarea.dataset.actionsAdded = 'true';
+
+        // Wrap textarea if not already wrapped
+        let wrapper = textarea.parentElement;
+        if (!wrapper.classList.contains('textarea-wrapper')) {
+            wrapper = document.createElement('div');
+            wrapper.className = 'textarea-wrapper';
+            textarea.parentNode.insertBefore(wrapper, textarea);
+            wrapper.appendChild(textarea);
+        }
+
+        // Create actions container
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'textarea-actions';
+
+        // Create paste button
+        if (showPaste && !textarea.readOnly) {
+            const pasteBtn = document.createElement('button');
+            pasteBtn.type = 'button';
+            pasteBtn.className = 'textarea-action-btn paste-btn';
+            pasteBtn.innerHTML = '📋 Paste';
+            pasteBtn.style.display = 'none'; // Hidden by default
+            
+            pasteBtn.addEventListener('click', async () => {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    if (text) {
+                        textarea.value = text;
+                        textarea.dispatchEvent(new Event('input', { bubbles: true }));
+                        
+                        // Flash success
+                        pasteBtn.classList.add('success');
+                        pasteBtn.innerHTML = '✓ Pasted';
+                        setTimeout(() => {
+                            pasteBtn.classList.remove('success');
+                            pasteBtn.innerHTML = '📋 Paste';
+                        }, 1500);
+
+                        if (onPaste) onPaste(text);
+                    }
+                } catch (error) {
+                    console.error('Paste failed:', error);
+                }
+            });
+
+            actionsDiv.appendChild(pasteBtn);
+
+            // Check clipboard periodically
+            const checkClipboard = async () => {
+                try {
+                    const permission = await navigator.permissions.query({ name: 'clipboard-read' });
+                    if (permission.state === 'granted' || permission.state === 'prompt') {
+                        const text = await navigator.clipboard.readText();
+                        pasteBtn.style.display = text ? 'flex' : 'none';
+                    }
+                } catch (error) {
+                    // Fallback: always show paste button
+                    pasteBtn.style.display = 'flex';
+                }
+            };
+
+            checkClipboard();
+            
+            // Check on focus
+            textarea.addEventListener('focus', checkClipboard);
+            
+            // Check periodically when focused
+            let intervalId;
+            textarea.addEventListener('focus', () => {
+                intervalId = setInterval(checkClipboard, 2000);
+            });
+            textarea.addEventListener('blur', () => {
+                clearInterval(intervalId);
+            });
+        }
+
+        // Create copy button
+        if (showCopy) {
+            const copyBtn = document.createElement('button');
+            copyBtn.type = 'button';
+            copyBtn.className = 'textarea-action-btn copy-btn';
+            copyBtn.innerHTML = '📄 Copy';
+            
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(textarea.value);
+                    
+                    // Flash success
+                    copyBtn.classList.add('success');
+                    copyBtn.innerHTML = '✓ Copied';
+                    setTimeout(() => {
+                        copyBtn.classList.remove('success');
+                        copyBtn.innerHTML = '📄 Copy';
+                    }, 1500);
+
+                    if (onCopy) onCopy(textarea.value);
+                } catch (error) {
+                    console.error('Copy failed:', error);
+                }
+            });
+
+            actionsDiv.appendChild(copyBtn);
+        }
+
+        // Add to wrapper
+        wrapper.appendChild(actionsDiv);
+
+        // Add class to textarea for padding
+        if (textarea.readOnly) {
+            textarea.classList.add('readonly');
+        }
+    },
+
+    /**
+     * Initialize textarea actions for all textareas in container
+     * @param {HTMLElement} container - Container element
+     */
+    initAllTextareaActions(container) {
+        const textareas = container.querySelectorAll('textarea.form-textarea, textarea.form-control');
+        textareas.forEach(textarea => {
+            utils.addTextareaActions(textarea, {
+                showCopy: true,
+                showPaste: !textarea.readOnly
+            });
+        });
     }
 };
 
@@ -679,5 +828,22 @@ setTimeout(() => {
                 clearHistory();
             }
         });
+    }
+    
+    // Bind sidebar toggle buttons
+    const btnHideSidebar = document.getElementById('btnHideSidebar');
+    const btnShowSidebar = document.getElementById('btnShowSidebar');
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    
+    if (btnHideSidebar) {
+        btnHideSidebar.addEventListener('click', toggleSidebar);
+    }
+    
+    if (btnShowSidebar) {
+        btnShowSidebar.addEventListener('click', toggleSidebar);
+    }
+    
+    if (btnToggleSidebar) {
+        btnToggleSidebar.addEventListener('click', toggleSidebar);
     }
 }, 100);

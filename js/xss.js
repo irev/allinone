@@ -3,6 +3,8 @@
  * Generate context-aware XSS payloads for security testing
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
   container.innerHTML = `
     <div class="tool-section">
@@ -436,4 +438,12 @@ export function render(container) {
       generatePayloads();
     }
   });
+
+  // Add copy/paste buttons to textarea
+  setTimeout(() => {
+    utils.addTextareaActions(payloadInput, {
+      showCopy: true,
+      showPaste: true
+    });
+  }, 100);
 }

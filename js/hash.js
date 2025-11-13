@@ -10,6 +10,8 @@
  * Catatan: MD5 tidak tersedia di Web Crypto API karena tidak aman
  */
 
+import { utils } from './main.js';
+
 /**
  * Fungsi utama untuk render UI Hash Generator
  * @param {HTMLElement} container - Container element untuk render
@@ -47,7 +49,7 @@ export function render(container) {
 
             <div class="form-group">
                 <label class="form-label">Pilih Algoritma Hash:</label>
-                <select id="hashAlgorithm" class="form-select">
+                <select id="hashAlgorithm" class="form-control">
                     <option value="SHA-256" selected>SHA-256 (Recommended)</option>
                     <option value="SHA-512">SHA-512 (Lebih Aman)</option>
                     <option value="SHA-1">SHA-1 (Legacy - Tidak Aman)</option>
@@ -210,6 +212,14 @@ function initializeEventListeners(container) {
     hashAlgorithm.addEventListener('change', () => {
         hashResults.classList.add('hidden');
     });
+
+    // Add copy/paste buttons to textarea
+    setTimeout(() => {
+        utils.addTextareaActions(hashInput, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 }
 
 /**

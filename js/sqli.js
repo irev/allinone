@@ -6,6 +6,8 @@
  * Unauthorized use may be illegal. Always obtain proper authorization.
  */
 
+import { utils } from './main.js';
+
 export function render(container) {
     container.innerHTML = `
         <div class="tool-header">
@@ -212,6 +214,14 @@ export function render(container) {
             alert('Failed to copy');
         }
     });
+
+    // Add copy/paste buttons to textarea
+    setTimeout(() => {
+        utils.addTextareaActions(customPayload, {
+            showCopy: true,
+            showPaste: true
+        });
+    }, 100);
 
     // Payload generation
     function generatePayload(type, db) {

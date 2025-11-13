@@ -3,6 +3,8 @@
  * Generate placeholder text and test data
  */
 
+import { utils } from './main.js';
+
 function initLorem() {
     return `
         <div class="tool-header">
@@ -527,5 +529,21 @@ export function render(container) {
         // Initial generation
         generateLorem();
         generateRandomData();
+
+        // Add copy/paste buttons to textareas (readonly, copy only)
+        const loremOutput = document.getElementById('loremOutput');
+        const randomOutput = document.getElementById('randomOutput');
+        if (loremOutput) {
+            utils.addTextareaActions(loremOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
+        if (randomOutput) {
+            utils.addTextareaActions(randomOutput, {
+                showCopy: true,
+                showPaste: false
+            });
+        }
     }, 100);
 }

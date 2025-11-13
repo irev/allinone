@@ -98,6 +98,12 @@ body.dark-mode .input-group select:focus {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 
+.input-group select option {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 12px 16px;
+}
+
 body.dark-mode .input-group select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -106,6 +112,11 @@ body.dark-mode .input-group select {
 body.dark-mode .input-group select:hover {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+body.dark-mode .input-group select option {
+    background-color: #1f2937;
+    color: #f9fafb;
 }
 
 body.dark-mode .input-group input[type="text"],
@@ -239,6 +250,28 @@ select.form-control option {
 }
 
 /* Dark Mode Support for All Form Elements */
+body.dark-mode select.form-control {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode select.form-control:hover {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+body.dark-mode select.form-control:active,
+body.dark-mode select.form-control:focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+body.dark-mode select.form-control option,
+body.dark-mode .input-group select option {
+    background-color: #1f2937;
+    color: #f9fafb;
+    padding: 12px 16px;
+}
+
 body.dark-mode input[type="text"],
 body.dark-mode input[type="password"],
 body.dark-mode input[type="email"],
@@ -250,34 +283,6 @@ body.dark-mode select {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     border-color: var(--border-color);
-}
-
-body.dark-mode select.form-control {
-    background: var(--bg-primary);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 16px 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-body.dark-mode select.form-control:hover {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    border-color: var(--primary-color);
-    background-color: var(--bg-secondary);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
-}
-
-body.dark-mode select.form-control:active,
-body.dark-mode select.form-control:focus {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-}
-
-body.dark-mode select.form-control option {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    padding: 12px 16px;
-    font-weight: 500;
 }
 
 /* Placeholder dark mode */
@@ -396,5 +401,89 @@ body.dark-mode input[type="range"]::-moz-range-thumb {
 
 body.dark-mode input[type="range"]::-moz-range-track {
     background: #374151;
+}
+
+/* ===================================
+   Textarea with Copy/Paste Actions
+   =================================== */
+
+.textarea-wrapper {
+    position: relative;
+}
+
+.textarea-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+}
+
+.textarea-action-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: var(--shadow-sm);
+    font-weight: 500;
+}
+
+.textarea-action-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.textarea-action-btn:active {
+    transform: translateY(0);
+}
+
+.textarea-action-btn.success {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+.textarea-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--bg-tertiary);
+}
+
+.textarea-action-btn:disabled:hover {
+    transform: none;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+/* Dark mode support */
+body.dark-mode .textarea-action-btn {
+    background: rgba(31, 41, 55, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+body.dark-mode .textarea-action-btn:hover {
+    background: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+/* Make room for action buttons */
+.textarea-wrapper textarea {
+    padding-right: 140px;
+}
+
+.textarea-wrapper textarea.readonly {
+    padding-right: 70px;
 }
 
