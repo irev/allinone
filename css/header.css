@@ -3,13 +3,14 @@
    =================================== */
 
 .top-bar {
-    background: white;
+    background: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
     padding: var(--spacing-md) var(--spacing-lg);
     position: sticky;
     top: 0;
     z-index: 100;
     box-shadow: var(--shadow-sm);
+    transition: background var(--transition-normal), border-color var(--transition-normal);
 }
 
 .top-bar-content {
@@ -23,11 +24,13 @@
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
+    transition: color var(--transition-normal);
 }
 
 .top-bar-actions {
     display: flex;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
+    align-items: center;
 }
 
 .btn-icon {

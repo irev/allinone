@@ -30,7 +30,13 @@ const toolTitles = {
     'csp': 'CSP Analyzer',
     'xss': 'XSS Payload Encoder',
     'regex': 'Regex Tester',
-    'baseconv': 'Base Converters'
+    'baseconv': 'Base Converters',
+    'pemcert': 'PEM Certificate Viewer',
+    'urlparser': 'URL Parser & Normalizer',
+    'diff': 'Diff/Compare Tool',
+    'entropy': 'Password Strength & Entropy Calculator',
+    'tlscors': 'TLS/SSL & CORS Tester',
+    'sqli': 'SQL Injection Payload Encoder'
 };
 
 /**
@@ -263,3 +269,288 @@ if (document.readyState === 'loading') {
 } else {
     initializeApp();
 }
+
+/**
+ * ============================================
+ * ADDITIONAL FEATURES: Dark Mode, Shortcuts, AutoSave
+ * ============================================
+ */
+
+// Dark Mode Management
+function initializeDarkMode() {
+    const btnDarkMode = document.getElementById('btnDarkMode');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    
+    // Load saved preference
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        if (darkModeIcon) darkModeIcon.textContent = '☀️';
+    }
+    
+    // Toggle dark mode
+    if (btnDarkMode) {
+        btnDarkMode.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isNowDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isNowDark);
+            if (darkModeIcon) {
+                darkModeIcon.textContent = isNowDark ? '☀️' : '🌙';
+            }
+        });
+    }
+}
+
+// Keyboard Shortcuts
+function initializeKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Ctrl/Cmd + K: Focus search/navigation
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            const firstNavLink = document.querySelector('.nav-link');
+            if (firstNavLink) firstNavLink.focus();
+        }
+        
+        // Ctrl/Cmd + D: Toggle dark mode
+        if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+            e.preventDefault();
+            document.getElementById('btnDarkMode')?.click();
+        }
+        
+        // Ctrl/Cmd + S: Save current state (autosave)
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            saveCurrentState();
+            showToast('✓ State saved', 'success');
+        }
+        
+        // Ctrl/Cmd + E: Export config
+        if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+            e.preventDefault();
+            exportConfig();
+        }
+        
+        // Escape: Clear focus
+        if (e.key === 'Escape') {
+            document.activeElement?.blur();
+        }
+    });
+}
+
+// AutoSave functionality
+function saveCurrentState() {
+    const state = {
+        currentTool: currentTool,
+        timestamp: new Date().toISOString()
+    };
+    
+    // Save all textareas and inputs
+    const inputs = document.querySelectorAll('textarea, input[type="text"]');
+    const inputStates = {};
+    inputs.forEach((input, index) => {
+        if (input.id) {
+            inputStates[input.id] = input.value;
+        }
+    });
+    
+    state.inputs = inputStates;
+    localStorage.setItem('appState', JSON.stringify(state));
+}
+
+// Load saved state
+function loadSavedState() {
+    const savedState = localStorage.getItem('appState');
+    if (savedState) {
+        try {
+            const state = JSON.parse(savedState);
+            
+            // Restore inputs after tool loads
+            setTimeout(() => {
+                Object.keys(state.inputs || {}).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.value = state.inputs[id];
+                    }
+                });
+            }, 500);
+        } catch (error) {
+            console.error('Error loading saved state:', error);
+        }
+    }
+}
+
+// AutoSave every 30 seconds
+let autoSaveInterval;
+function startAutoSave() {
+    autoSaveInterval = setInterval(() => {
+        saveCurrentState();
+    }, 30000); // 30 seconds
+}
+
+// Export configuration
+function exportConfig() {
+    const config = {
+        version: '1.0',
+        exportDate: new Date().toISOString(),
+        darkMode: document.body.classList.contains('dark-mode'),
+        currentTool: currentTool,
+        history: getHistory()
+    };
+    
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `security-tools-config-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    showToast('✓ Config exported', 'success');
+}
+
+// Import configuration
+function importConfig() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        try {
+            const text = await file.text();
+            const config = JSON.parse(text);
+            
+            // Apply configuration
+            if (config.darkMode && !document.body.classList.contains('dark-mode')) {
+                document.getElementById('btnDarkMode')?.click();
+            } else if (!config.darkMode && document.body.classList.contains('dark-mode')) {
+                document.getElementById('btnDarkMode')?.click();
+            }
+            
+            if (config.currentTool) {
+                navigateToTool(config.currentTool);
+            }
+            
+            showToast('✓ Config imported', 'success');
+        } catch (error) {
+            showToast('✗ Invalid config file', 'error');
+            console.error('Import error:', error);
+        }
+    };
+    
+    input.click();
+}
+
+// History management
+function addToHistory(tool, action) {
+    let history = getHistory();
+    history.unshift({
+        tool,
+        action,
+        timestamp: new Date().toISOString()
+    });
+    
+    // Keep only last 50 items
+    history = history.slice(0, 50);
+    localStorage.setItem('toolHistory', JSON.stringify(history));
+}
+
+function getHistory() {
+    try {
+        return JSON.parse(localStorage.getItem('toolHistory') || '[]');
+    } catch {
+        return [];
+    }
+}
+
+function clearHistory() {
+    localStorage.removeItem('toolHistory');
+    localStorage.removeItem('appState');
+    showToast('✓ History cleared', 'success');
+}
+
+// Toast notifications
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        padding: 12px 24px;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Add CSS animations for toast
+const toastStyles = document.createElement('style');
+toastStyles.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(toastStyles);
+
+// Initialize additional features
+setTimeout(() => {
+    initializeDarkMode();
+    initializeKeyboardShortcuts();
+    loadSavedState();
+    startAutoSave();
+    
+    // Bind export/import buttons
+    const btnExport = document.getElementById('btnExportConfig');
+    const btnImport = document.getElementById('btnImportConfig');
+    const btnClearHistory = document.getElementById('btnClearHistory');
+    
+    if (btnExport) {
+        btnExport.addEventListener('click', exportConfig);
+    }
+    
+    if (btnImport) {
+        btnImport.addEventListener('click', importConfig);
+    }
+    
+    if (btnClearHistory) {
+        btnClearHistory.addEventListener('click', () => {
+            if (confirm('Clear all history and saved states?')) {
+                clearHistory();
+            }
+        });
+    }
+}, 100);

@@ -78,9 +78,49 @@
     background-color: #059669;
 }
 
-.button-group {
+.button-group,
+.btn-group {
     display: flex;
     gap: var(--spacing-sm);
     flex-wrap: wrap;
     margin: var(--spacing-md) 0;
+}
+
+/* Icon Buttons */
+.btn-icon,
+.btn-icon-small {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    padding: var(--spacing-xs);
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-icon-small {
+    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+}
+
+.btn-icon:hover,
+.btn-icon-small:hover {
+    background-color: rgba(37, 99, 235, 0.1);
+    transform: scale(1.1);
+}
+
+body.dark-mode .btn-icon:hover,
+body.dark-mode .btn-icon-small:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+}
+
+.btn-sm {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.85rem;
 }

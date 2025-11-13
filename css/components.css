@@ -2,6 +2,23 @@
    Tool Components & Output Styles
    =================================== */
 
+.tool-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.tool-title {
+    font-size: 1.875rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-title {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+}
+
 .tool-section {
     margin-bottom: var(--spacing-lg);
 }
@@ -34,20 +51,23 @@
 
 .output-box {
     position: relative;
-    background-color: #f8fafc;
+    background-color: var(--bg-secondary);
     border: 2px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-md);
+    transition: all var(--transition-normal);
 }
 
 .output-content {
-    background-color: #f8fafc;
+    background-color: var(--bg-secondary);
     border: 2px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
     font-family: 'Courier New', monospace;
     font-size: 0.9rem;
+    transition: all var(--transition-normal);
+}
     min-height: 60px;
     max-height: 400px;
     overflow-y: auto;
@@ -114,4 +134,52 @@
     padding: var(--spacing-md);
     color: #991b1b;
     font-weight: 500;
+}
+
+/* Alert Messages */
+.alert {
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+    border-left: 4px solid;
+}
+
+.alert-info {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
+    color: var(--text-primary);
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-color: #10b981;
+    color: var(--text-primary);
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border-color: #f59e0b;
+    color: var(--text-primary);
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: var(--text-primary);
+}
+
+body.dark-mode .alert-info {
+    background-color: rgba(59, 130, 246, 0.15);
+}
+
+body.dark-mode .alert-success {
+    background-color: rgba(16, 185, 129, 0.15);
+}
+
+body.dark-mode .alert-warning {
+    background-color: rgba(245, 158, 11, 0.15);
+}
+
+body.dark-mode .alert-danger {
+    background-color: rgba(239, 68, 68, 0.15);
 }
