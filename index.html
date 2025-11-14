@@ -289,15 +289,16 @@
                     <button class="btn-icon" id="btnDarkMode" title="Toggle Dark Mode">
                         <span id="darkModeIcon">🌙</span>
                     </button>
-                    <button class="btn-icon" id="btnClearHistory" title="Clear History">
-                        🗑️
-                    </button>
-                    <button class="btn-icon" id="btnExportConfig" title="Export Config">
-                        📥
-                    </button>
-                    <button class="btn-icon" id="btnImportConfig" title="Import Config">
-                        📤
-                    </button>
+                    <div class="dropdown" style="display:inline-block;position:relative;">
+                        <button class="btn-icon" id="btnGearMenu" title="More Actions" aria-haspopup="true" aria-expanded="false" style="font-size:1.3em;">
+                            <span aria-hidden="true">⚙️</span>
+                        </button>
+                        <ul class="dropdown-menu" id="gearDropdownMenu" style="display:none;position:absolute;right:0;top:110%;background:#222;color:#fff;min-width:180px;box-shadow:0 2px 8px rgba(0,0,0,0.15);border-radius:6px;padding:0.5em 0;z-index:1000;list-style:none;">
+                            <li><button class="dropdown-item" id="btnClearHistory" style="width:100%;background:none;border:none;color:inherit;text-align:left;padding:0.5em 1.2em;font-size:1em;cursor:pointer;">🗑️ Clear History</button></li>
+                            <li><button class="dropdown-item" id="btnExportConfig" style="width:100%;background:none;border:none;color:inherit;text-align:left;padding:0.5em 1.2em;font-size:1em;cursor:pointer;">📥 Export Config</button></li>
+                            <li><button class="dropdown-item" id="btnImportConfig" style="width:100%;background:none;border:none;color:inherit;text-align:left;padding:0.5em 1.2em;font-size:1em;cursor:pointer;">📤 Import Config</button></li>
+                        </ul>
+                    </div>
                     <button class="btn-icon" id="btnToggleSidebar" title="Toggle Sidebar">
                         ☰
                     </button>
