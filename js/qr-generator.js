@@ -368,22 +368,38 @@ function generateQR() {
         const content = getQRContent();
         const size = parseInt(document.getElementById('qrSize').value);
         
-        // Generate QR code
-        const canvas = generateQRCode(content, size);
-        
-        // Display
+        // Use QRCode.js for real QR code generation
         output.innerHTML = '';
-        output.appendChild(canvas);
-        
-        // Enable download
-        btnDownload.disabled = false;
-        btnDownload.onclick = () => {
-            const link = document.createElement('a');
-            link.download = `qrcode-${Date.now()}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-        };
-        
+        const qrDiv = document.createElement('div');
+        output.appendChild(qrDiv);
+        // QRCode.js expects an element and options
+        // eslint-disable-next-line no-undef
+        const qr = new window.QRCode(qrDiv, {
+            text: content,
+            width: size,
+            height: size,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: window.QRCode.CorrectLevel.H
+        });
+        // Find the generated <img> or <canvas> for download
+        setTimeout(() => {
+            let qrImg = qrDiv.querySelector('img');
+            let qrCanvas = qrDiv.querySelector('canvas');
+            let dataUrl = '';
+            if (qrImg && qrImg.src) {
+                dataUrl = qrImg.src;
+            } else if (qrCanvas) {
+                dataUrl = qrCanvas.toDataURL();
+            }
+            btnDownload.disabled = false;
+            btnDownload.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `qrcode-${Date.now()}.png`;
+                link.href = dataUrl;
+                link.click();
+            };
+        }, 200);
         // Show info
         info.innerHTML = `
             <div class="alert alert-success">
@@ -391,8 +407,7 @@ function generateQR() {
                 <small>Content length: ${content.length} characters | Size: ${size}x${size}px</small>
             </div>
             <div class="alert alert-info" style="margin-top: 0.5rem;">
-                <strong>📝 Note:</strong> This is a simplified QR code visualization. For production use, 
-                scan with a QR reader app. For real QR codes with error correction, consider using a dedicated library.
+                <strong>📝 Note:</strong> QR code is generated using QRCode.js and can be scanned by any QR reader app.
             </div>
         `;
     } catch (error) {
