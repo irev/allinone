@@ -371,6 +371,11 @@ function generateQR() {
         // Use QRCode.js for real QR code generation
         output.innerHTML = '';
         const qrDiv = document.createElement('div');
+        qrDiv.style.display = 'flex';
+        qrDiv.style.justifyContent = 'center';
+        qrDiv.style.alignItems = 'center';
+        qrDiv.style.width = '100%';
+        qrDiv.style.margin = '0 auto';
         output.appendChild(qrDiv);
         // QRCode.js expects an element and options
         // eslint-disable-next-line no-undef
