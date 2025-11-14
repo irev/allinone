@@ -912,26 +912,27 @@ toastStyles.textContent = `
 `;
 document.head.appendChild(toastStyles);
 
-// Initialize additional features
+
+// Initialize additional features and UI event bindings
 setTimeout(() => {
     initializeDarkMode();
     initializeKeyboardShortcuts();
     loadSavedState();
     startAutoSave();
-    
+
     // Bind export/import buttons
     const btnExport = document.getElementById('btnExportConfig');
     const btnImport = document.getElementById('btnImportConfig');
     const btnClearHistory = document.getElementById('btnClearHistory');
-    
+
     if (btnExport) {
         btnExport.addEventListener('click', exportConfig);
     }
-    
+
     if (btnImport) {
         btnImport.addEventListener('click', importConfig);
     }
-    
+
     if (btnClearHistory) {
         btnClearHistory.addEventListener('click', () => {
             if (confirm('Clear all history and saved states?')) {
@@ -939,21 +940,40 @@ setTimeout(() => {
             }
         });
     }
-    
+
     // Bind sidebar toggle buttons
     const btnHideSidebar = document.getElementById('btnHideSidebar');
     const btnShowSidebar = document.getElementById('btnShowSidebar');
     const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-    
+
     if (btnHideSidebar) {
         btnHideSidebar.addEventListener('click', toggleSidebar);
     }
-    
+
     if (btnShowSidebar) {
         btnShowSidebar.addEventListener('click', toggleSidebar);
     }
-    
+
     if (btnToggleSidebar) {
         btnToggleSidebar.addEventListener('click', toggleSidebar);
+    }
+
+    // Dropdown menu toggle for gear icon
+    const gearBtn = document.getElementById('btnGearMenu');
+    const gearMenu = document.getElementById('gearDropdownMenu');
+    if (gearBtn && gearMenu) {
+        gearBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var isOpen = gearMenu.style.display === 'block';
+            gearMenu.style.display = isOpen ? 'none' : 'block';
+            gearBtn.setAttribute('aria-expanded', !isOpen);
+        });
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!gearMenu.contains(e.target) && e.target !== gearBtn) {
+                gearMenu.style.display = 'none';
+                gearBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
     }
 }, 100);
