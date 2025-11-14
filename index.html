@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+        <meta http-equiv="content-language" content="id, en">
+        <link rel="alternate" href="/" hreflang="id" />
+        <link rel="alternate" href="/en/" hreflang="en" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Security Tools - Alat Bantu Keamanan Web</title>
-    <meta name="description" content="Kumpulan alat bantu keamanan web, DevOps, dan Linux CLI. Encode, hash, analisa log, QR code, dan banyak lagi. 100% client-side, aman, dan gratis. | Web security, DevOps, and Linux CLI tools. Encode, hash, log analyzer, QR code, and more. 100% client-side, safe, and free.">
+    <meta name="description" content="Alat bantu keamanan web, DevOps, dan Linux: encode, hash, analisa log, QR code, dan banyak lagi. Semua fitur berjalan 100% di browser Anda, tanpa server, gratis, dan aman. | Web security, DevOps, and Linux CLI tools: encode, hash, log analyzer, QR code, and more. All features run 100% client-side, no server, free, and secure.">
     <meta name="keywords" content="web security, keamanan web, devops, linux, tools, alat, base64, hash, url encode, log analyzer, qr code, keamanan, gratis, client-side, security tools, free tools, cyber security, encode, decode, enkripsi, dekripsi, keamanan siber, open source">
     <meta name="language" content="id,en">
     <meta name="author" content="IREV">
@@ -21,7 +24,7 @@
         <script>
             // Auto-detect domain for SEO meta tags
             document.addEventListener('DOMContentLoaded', function() {
-                var domain = window.location.origin;
+                var domain = window.location.origin || 'https://yourdomain.com';
                 var ogUrl = document.querySelector('meta[property="og:url"]');
                 var ogImage = document.querySelector('meta[property="og:image"]');
                 var twitterImage = document.querySelector('meta[name="twitter:image"]');
@@ -29,7 +32,14 @@
                 if (ogUrl) ogUrl.setAttribute('content', domain + '/');
                 if (ogImage) ogImage.setAttribute('content', domain + '/assets/og-image.png');
                 if (twitterImage) twitterImage.setAttribute('content', domain + '/assets/og-image.png');
-                if (canonical) canonical.setAttribute('href', domain + '/');
+                if (canonical) {
+                    var canonicalUrl = domain + '/';
+                    canonical.setAttribute('href', canonicalUrl);
+                    // Fallback if still empty
+                    if (!canonical.getAttribute('href')) {
+                        canonical.setAttribute('href', 'https://yourdomain.com/');
+                    }
+                }
             });
         </script>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -264,6 +274,11 @@
 
     <!-- Main Content Area -->
     <main class="main-wrapper">
+                <!-- SEO Intro Section for H1 match -->
+                <section class="intro" style="margin:2rem 0 1rem 0;max-width:700px;">
+                    <h1 style="font-size:2rem;font-weight:bold;">Security & DevOps Tools</h1>
+                    <p>Security & DevOps Tools adalah kumpulan alat bantu keamanan web, DevOps, dan Linux CLI yang lengkap. Temukan fitur seperti encode, hash, analisa log, QR code, dan banyak lagi. Semua alat berjalan 100% di browser Anda (client-side), gratis, dan aman digunakan. Web Security & DevOps Tools for all your needs: encoding, hashing, log analysis, QR code generation, and more. 100% client-side, free, and secure.</p>
+                </section>
         <!-- Top Bar -->
         <header class="top-bar">
             <div class="top-bar-content">
